@@ -12,6 +12,9 @@ import HoldCards from './holdCards';
 
 import PlayerUI from './PlayerUI';
 
+import BlindManager from './BlindManager';
+import MoneyManager from './MoneyManager';
+
 class App extends React.Component {
   constructor(props){
     super(props)
@@ -124,6 +127,7 @@ class App extends React.Component {
     const {players, round, hands} = this.state;
     const amt = parseInt(amount)
 
+    players[player].checked = false;
     players[player].cash = players[player].cash - amt;
     players[player]['currentBet'] = players[player]['currentBet'] + amt || amt;
     round.pots[0] = round.pots[0] + amt;
@@ -146,6 +150,16 @@ class App extends React.Component {
   foldPlayer = (player) => {
     const {players} = this.state;
     players[player].folded = true;
+    players[player].checked = false;
+    this.setState({
+      players
+    });
+  }
+
+  assignDealer = (playerid) => {
+    const {players} = this.state;
+    Object.keys(players).forEach(key => players[key].dealer = false);
+    players[playerid].dealer = true;
     this.setState({
       players
     });
@@ -155,11 +169,22 @@ class App extends React.Component {
     this.betChips(player, this.state.players[player].currentBet ? this.state.round.currentBet - this.state.players[player].currentBet : this.state.round.currentBet);
   }
 
+  checkBet = (player) => {
+    const {players} = this.state;
+    players[player].checked = true;
+    this.setState({
+      players
+    });
+  }
+
   lockBets = () => {
     const {players, round} = this.state;
     round['currentBet'] = 0;
     Object.keys(players).forEach(
-      key => players[key].currentBet = 0
+      key => {
+        players[key].currentBet = 0;
+        players[key].checked = false;
+      }
     );
     this.setState({
       players,
@@ -181,39 +206,43 @@ class App extends React.Component {
     });
   }
 
-  next = (db, key) => {
-    const keys = Object.keys(db)
-      , i = keys.indexOf(key);
-    return i !== -1 && keys[i + 1] && keys[i + 1];
-  }
+  // next = (db, key) => {
+  //   const keys = Object.keys(db)
+  //     , i = keys.indexOf(key);
+  //   // if(db[keys[i + 1]].folded || !db[keys[i + 1]].seated){
+  //   //   console.log('player not in this round');
+  //   // }else{
+  //     return i !== -1 && keys[i + 1] && keys[i + 1];
+  //   // }
+  // }
 
-  setActivePlayer = () => {
-    const {players} = this.state;
-    let activePlayerID = 0;
-    let i = 0;
-    let activePlayerIndex = 0;
-    Object.keys(players).forEach(key => {
-      i++
-      if(players[key].active){
-        activePlayerID = key;
-        activePlayerIndex = i;
-      }
-    })
-    if(activePlayerID > 0){
-      players[activePlayerID].active = false;
-      if(activePlayerIndex < Object.keys(players).length){
-        players[this.next(players, activePlayerID)].active = true;
-      }else{
-        players[Object.keys(players)[0]].active = true;
-      }
-    }else{
-      players[Object.keys(players)[0]].active = true; //make first player active. should actually be person with blind chip
-    }
+  // setActivePlayer = () => {
+  //   const {players} = this.state;
+  //   let activePlayerID = 0;
+  //   let i = 0;
+  //   let activePlayerIndex = 0;
+  //   Object.keys(players).forEach(key => {
+  //     i++
+  //     if(players[key].active){
+  //       activePlayerID = key;
+  //       activePlayerIndex = i;
+  //     }
+  //   })
+  //   if(activePlayerID > 0){
+  //     players[activePlayerID].active = false;
+  //     if(activePlayerIndex < Object.keys(players).length){
+  //       players[this.next(players, activePlayerID)].active = true;
+  //     }else{
+  //       players[Object.keys(players)[0]].active = true;
+  //     }
+  //   }else{
+  //     players[Object.keys(players)[0]].active = true; //make first player active. should actually be person with blind chip
+  //   }
 
-    this.setState({
-      players
-    });
-  }
+  //   this.setState({
+  //     players
+  //   });
+  // }
 
   splitPot = (playerIDs, potID) => {
     const {players, round} = this.state;
@@ -230,6 +259,27 @@ class App extends React.Component {
     });
   }
 
+  moveMoney = (fromPlayer, toPlayer, amount) => {
+    const {players} = this.state;
+    const amt = parseInt(amount);
+    if(parseInt(players[fromPlayer].cash) > amt){
+      players[fromPlayer].cash -= amt;
+      players[toPlayer].cash += amt;
+    }
+    this.setState({
+      players
+    });
+  }
+
+  // getNextPlayer = (currentPlayer) => { 
+  //   const {players, round} = this.state;
+  //   const keys = Object.keys(players), i = keys.indexOf(currentPlayer) || 0;
+  //   console.log(keys, i);
+  //   // Object.keys(players).map(key => {
+  //   //   if(players)
+  //   // })
+  // }
+
   render(){
     return (
       <div className="react-poker">
@@ -245,6 +295,9 @@ class App extends React.Component {
         <button onClick={this.dealFlop}>Deal flop</button>
         <button onClick={this.dealTurn}>Deal turn</button>
         <button onClick={this.dealRiver}>Deal river</button>
+        <BlindManager players={this.state.players} assignDealer={this.assignDealer} />
+        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
+        
 
 <hr/>
         {/*
@@ -254,7 +307,11 @@ class App extends React.Component {
 <hr/>
 
         {Object.keys(this.state.players).map(
-          key => <PlayerUI key={key} id={key} player={this.state.players[key]}  cards={this.state.hands[key]} betChips={this.betChips} foldPlayer={this.foldPlayer} callBet={this.callBet} />
+          key => <PlayerUI key={key} id={key} player={this.state.players[key]}  cards={this.state.hands[key]}
+          betChips={this.betChips}
+          foldPlayer={this.foldPlayer}
+          callBet={this.callBet}
+          checkBet={this.checkBet} />
         )}
 
       </div>

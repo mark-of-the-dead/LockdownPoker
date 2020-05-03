@@ -6,7 +6,8 @@ const players = {
     cash: 5000,
     seated: true,
     active: false,
-    folded: false
+    folded: false,
+    dealer: false
   },
   2: {
     name: "John",
@@ -15,7 +16,8 @@ const players = {
     cash: 5000,
     seated: true,
     active: false,
-    folded: false
+    folded: false,
+    dealer: false
   },
   3: {
     name: "Stephen",
@@ -24,7 +26,8 @@ const players = {
     cash: 5000,
     seated: true,
     active: false,
-    folded: false
+    folded: false,
+    dealer: false
   },
   4: {
     name: "Dave",
@@ -33,7 +36,8 @@ const players = {
     cash: 5000,
     seated: true,
     active: false,
-    folded: false
+    folded: false,
+    dealer: false
   },
 };
 

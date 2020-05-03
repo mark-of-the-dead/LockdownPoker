@@ -16,7 +16,8 @@ class AddPlayerForm extends React.Component {
       cash: 5000,
       seated: false,
       active: false,
-      folded: false
+      folded: false,
+      dealer: false
     }
     this.props.addPlayer(player);
     e.currentTarget.reset();

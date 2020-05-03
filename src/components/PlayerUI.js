@@ -25,18 +25,31 @@ class PlayerUI extends React.Component {
   call = () => {
     this.props.callBet(this.props.id);
   }
+  check = () => {
+    this.props.checkBet(this.props.id);
+  }
 
 
   render(){
     const player = this.props.player || {};
+    let card1, card2;
+    if(this.props.cards){
+      card1 = this.props.cards[0];
+      card2 = this.props.cards[1];
+    }
     return (
       <React.Fragment>
         <div className="player-ui">
           {player.name}({this.props.id})
-          <button onClick={this.call}>Call</button>
+          <div className="hold-cards">
+            <span className={`holdcard `+card1}>{card1}</span>
+            <span className={`holdcard `+card2}>{card2}</span>
+          </div>
+          {!player.currentBet ? <button onClick={this.check}>Check</button> : null }
           <button onClick={this.placeBet}>Bet</button>
           <input type="range" min="0" max="1000" step="5"
             className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />{this.state.amountLabel}
+          <button onClick={this.call}>Call</button>
           <button onClick={this.fold}>Fold</button>
         </div>
         <hr />
