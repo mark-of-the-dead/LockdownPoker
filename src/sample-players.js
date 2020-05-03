@@ -4,7 +4,7 @@ const players = {
     avatar: "monkey",
     pin: 5555,
     cash: 5000,
-    seated: false,
+    seated: true,
     active: false,
     folded: false
   },
@@ -13,7 +13,7 @@ const players = {
     avatar: "panda",
     pin: 5555,
     cash: 5000,
-    seated: false,
+    seated: true,
     active: false,
     folded: false
   },
@@ -22,7 +22,7 @@ const players = {
     avatar: "dog",
     pin: 5555,
     cash: 5000,
-    seated: false,
+    seated: true,
     active: false,
     folded: false
   },
@@ -31,7 +31,7 @@ const players = {
     avatar: "giraffe",
     pin: 5555,
     cash: 5000,
-    seated: false,
+    seated: true,
     active: false,
     folded: false
   },

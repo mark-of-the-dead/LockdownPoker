@@ -24,7 +24,7 @@ class App extends React.Component {
     game: {},
     hands: {},
     community: {},
-    round: {pots: [0]},
+    round: {pots: [0], currentBet: 0},
     deck: freshDeck
   };
 
@@ -58,13 +58,15 @@ class App extends React.Component {
     let handsObj = {};
     const communityObj = {};
     Object.keys(this.state.players).map(key => {
-      let arr = [];
-      for(let i=0;i<2;i++){
-        const j = Math.floor(Math.random() * deck.length);
-        arr[i] = deck[j];
-        deck.splice(j,1);
+      if(this.state.players[key].seated && !this.state.players[key].folded){ 
+        let arr = [];
+        for(let i=0;i<2;i++){
+          const j = Math.floor(Math.random() * deck.length);
+          arr[i] = deck[j];
+          deck.splice(j,1);
+        }
+        handsObj[key] = arr;
       }
-      handsObj[key] = arr;
     });
     this.setState({
       hands: handsObj,
@@ -74,6 +76,7 @@ class App extends React.Component {
   }
 
   dealFlop = () => {
+    this.lockBets();
     const {community, deck} = this.state;
     let arr = [];
     for(let i=0;i<3;i++){
@@ -90,6 +93,7 @@ class App extends React.Component {
   }
 
   dealTurn = () => {
+    this.lockBets();
     const {community, deck} = this.state;
 
     const j = Math.floor(Math.random() * deck.length);
@@ -103,6 +107,7 @@ class App extends React.Component {
   }
 
   dealRiver = () => {
+    this.lockBets();
     const {community, deck} = this.state;
 
     const j = Math.floor(Math.random() * deck.length);
@@ -147,13 +152,54 @@ class App extends React.Component {
   }
 
   callBet = (player) => {
-    this.betChips(player, this.state.round.currentBet);
+    this.betChips(player, this.state.players[player].currentBet ? this.state.round.currentBet - this.state.players[player].currentBet : this.state.round.currentBet);
+  }
+
+  lockBets = () => {
+    const {players, round} = this.state;
+    round['currentBet'] = 0;
+    Object.keys(players).forEach(
+      key => players[key].currentBet = 0
+    );
+    this.setState({
+      players,
+      round
+    });
+  }
+
+  resetSeatedPlayers = () => {
+    const {players} = this.state;
+    Object.keys(players).forEach(key => {
+      if(players[key].seated){
+        players[key].folded = false;
+      }else{
+        players[key].folded = true;
+      }
+    })
+    this.setState({
+      players
+    });
+  }
+
+  splitPot = (playerIDs, potID) => {
+    const {players, round} = this.state;
+    const payout = Math.floor(round.pots[potID] / playerIDs.length);
+    playerIDs.forEach(
+      key => {
+        players[key].cash += payout;
+        round.pots[potID] -= payout;
+      }
+    );
+    this.setState({
+      players,
+      round
+    });
   }
 
   render(){
     return (
       <div className="react-poker">
-        <Players playerCount={0} players={this.state.players} />
+        <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
         <Info gamename="Table 1" startchips={5000} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
 
