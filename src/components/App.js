@@ -181,6 +181,40 @@ class App extends React.Component {
     });
   }
 
+  next = (db, key) => {
+    const keys = Object.keys(db)
+      , i = keys.indexOf(key);
+    return i !== -1 && keys[i + 1] && keys[i + 1];
+  }
+
+  setActivePlayer = () => {
+    const {players} = this.state;
+    let activePlayerID = 0;
+    let i = 0;
+    let activePlayerIndex = 0;
+    Object.keys(players).forEach(key => {
+      i++
+      if(players[key].active){
+        activePlayerID = key;
+        activePlayerIndex = i;
+      }
+    })
+    if(activePlayerID > 0){
+      players[activePlayerID].active = false;
+      if(activePlayerIndex < Object.keys(players).length){
+        players[this.next(players, activePlayerID)].active = true;
+      }else{
+        players[Object.keys(players)[0]].active = true;
+      }
+    }else{
+      players[Object.keys(players)[0]].active = true; //make first player active. should actually be person with blind chip
+    }
+
+    this.setState({
+      players
+    });
+  }
+
   splitPot = (playerIDs, potID) => {
     const {players, round} = this.state;
     const payout = Math.floor(round.pots[potID] / playerIDs.length);
