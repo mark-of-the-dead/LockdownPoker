@@ -24,7 +24,7 @@ class App extends React.Component {
 
   state = {
     players: {},
-    game: {},
+    game: { 'smallblind' : 25, 'startchips' : 5000},
     hands: {},
     community: {},
     round: {pots: [0], currentBet: 0},
@@ -156,6 +156,15 @@ class App extends React.Component {
     });
   }
 
+  rebuy = (player) => {
+    const {players, game} = this.state;
+    players[player].cash += game.startchips;
+    this.setState({
+      players,
+      game
+    });
+  }
+
   assignDealer = (playerid) => {
     const {players} = this.state;
     Object.keys(players).forEach(key => players[key].dealer = false);
@@ -267,6 +276,18 @@ class App extends React.Component {
   //   });
   // }
 
+  sidePot = (amount) => {
+    //amount = amount of last pot to move into sidepot (the bit some player can't win)
+    const {round} = this.state
+    const amt = amount ? parseInt(amount) : 0;
+    round.pots.splice(0, 0, 0); //at index 0, without removing any items, add item zero;
+    round.pots[1] -= amount;
+    round.pots[0] += amount;
+    this.setState({
+      round
+    });
+  }
+
   splitPot = (playerIDs, potID) => {
     const {players, round} = this.state;
     const payout = Math.floor(round.pots[potID] / playerIDs.length);
@@ -307,7 +328,7 @@ class App extends React.Component {
     return (
       <div className="react-poker">
         <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
-        <Info gamename="Table 1" startchips={5000} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
+        <Info gamename="Table 1" startchips={this.state.game.startchips} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
 
 <hr/>
