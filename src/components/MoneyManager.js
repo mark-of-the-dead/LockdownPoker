@@ -15,11 +15,13 @@ class MoneyManager extends React.Component {
   }
 
   render(){
+    const pots = this.props.pots || {};
+
     return (
       <form className="set-dealer" onSubmit={this.cashout}>
-      <p>Payout from pot 
+      <p>Payout from pot
       <select name="potlist" ref={this.potRef}>
-        {Object.keys(this.props.pots).map(key => <option key={key} value={key} >({key})-&pound;{this.props.pots[key]}</option>)}
+        {Object.keys(pots).map(key => <option key={key} value={key} >({key})-&pound;{pots[key]}</option>)}
       </select>
       :</p>
       <select id="playerList2" name="playerlist" ref={this.idRef} multiple>

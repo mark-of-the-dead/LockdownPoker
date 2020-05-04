@@ -1,5 +1,7 @@
 import React from 'react';
 
+import base from "../base"
+
 import Info from './Info';
 import Players from './Players';
 import Table from './Table';
@@ -24,13 +26,39 @@ class App extends React.Component {
 
   state = {
     players: {},
-    game: { 'smallblind' : 25, 'startchips' : 5000},
+    game: {},
     hands: {},
     community: {},
-    round: {pots: [0], currentBet: 0},
+    round: {},
     deck: freshDeck
   };
 
+  componentDidMount(){
+    this.setGameConfig();
+
+    const { params } = this.props.match;
+    this.playerRef = base.syncState(`${params.tableId}/players`, {
+      context: this,
+      state: 'players'
+    });
+    this.gameRef = base.syncState(`${params.tableId}/game`, {
+      context: this,
+      state: 'game'
+    });
+    this.roundRef = base.syncState(`${params.tableId}/round`, {
+      context: this,
+      state: 'round'
+    });
+  }
+
+  componentWillUnmount(){
+    console.log('UNMOUNTING!');
+    base.removeBinding(this.ref);
+  }
+
+  closeTable = () => {
+    base.removeBinding(this.ref);
+  }
 
   addPlayer = (player) => {
     const players = {...this.state.players}
@@ -44,6 +72,13 @@ class App extends React.Component {
     this.setState({
       players: samplePlayers
     });
+  }
+
+  setGameConfig = () => {
+    this.setState({
+      game: { 'smallblind' : 25, 'startchips' : 5000},
+      round: {pots: [0], currentBet: 0}
+    })
   }
 
   resetDeck = () => {
@@ -173,7 +208,7 @@ class App extends React.Component {
       players
     });
   }
-  
+
 
   callBet = (player) => {
     this.betChips(player, this.state.players[player].currentBet ? this.state.round.currentBet - this.state.players[player].currentBet : this.state.round.currentBet);
@@ -281,8 +316,8 @@ class App extends React.Component {
     const {round} = this.state
     const amt = amount ? parseInt(amount) : 0;
     round.pots.splice(0, 0, 0); //at index 0, without removing any items, add item zero;
-    round.pots[1] -= amount;
-    round.pots[0] += amount;
+    round.pots[1] -= amt;
+    round.pots[0] += amt;
     this.setState({
       round
     });
@@ -315,6 +350,18 @@ class App extends React.Component {
     });
   }
 
+  movePotMoney = (fromPot, toPot, amount) => {
+    const {round} = this.state;
+    const amt = parseInt(amount);
+    if(typeof round.pots[fromPot] !== 'undefined' && typeof round.pots[toPot] !== 'undefined' && parseInt(round.pots[fromPot]) >= amt){
+      round.pots[fromPot] -= amt;
+      round.pots[toPot] += amt;
+    }
+    this.setState({
+      round
+    });
+  }
+
   // getNextPlayer = (currentPlayer) => {
   //   const {players, round} = this.state;
   //   const keys = Object.keys(players), i = keys.indexOf(currentPlayer) || 0;
@@ -328,7 +375,7 @@ class App extends React.Component {
     return (
       <div className="react-poker">
         <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
-        <Info gamename="Table 1" startchips={this.state.game.startchips} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
+        <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
 
 <hr/>
@@ -339,7 +386,7 @@ class App extends React.Component {
         <button onClick={this.dealFlop}>Deal flop</button>
         <button onClick={this.dealTurn}>Deal turn</button>
         <button onClick={this.dealRiver}>Deal river</button>
-        <BlindManager players={this.state.players} assignDealer={this.assignDealer} betChips={this.betChips} />
+        <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
         <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
 
 

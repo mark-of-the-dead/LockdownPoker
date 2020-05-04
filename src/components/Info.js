@@ -3,6 +3,8 @@ import React from 'react';
 class Info extends React.Component {
   render(){
 
+    const pots = this.props.pots || {};
+
     return (
       <React.Fragment>
       <p>Game Info</p>
@@ -12,7 +14,7 @@ class Info extends React.Component {
       </ul>
       <p>Pots:</p>
       <ul className="potlist">
-        {Object.keys(this.props.pots).map(key => <li key={key}>&pound;{this.props.pots[key]}</li>)}
+        {Object.keys(pots).map(key => <li key={key}>&pound;{pots[key]}</li>)}
       </ul>
       </React.Fragment>
     )

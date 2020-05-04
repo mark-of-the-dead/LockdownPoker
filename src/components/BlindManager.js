@@ -20,8 +20,8 @@ class BlindManager extends React.Component {
 
   payBlinds = (e) => {
     e.preventDefault();
-    this.props.betChips(this.blindRef.current.value, 25);
-    this.props.betChips(this.bigBlindRef.current.value, 50);
+    this.props.betChips(this.blindRef.current.value, this.props.blinds);
+    this.props.betChips(this.bigBlindRef.current.value, (parseInt(this.props.blinds) * 2));
   }
 
   render(){
