@@ -1,7 +1,7 @@
 const players = {
   1: {
     name: "Mark",
-    avatar: "monkey",
+    avatar: "mark",
     pin: 5555,
     cash: 5000,
     seated: true,
@@ -10,8 +10,8 @@ const players = {
     dealer: false
   },
   2: {
-    name: "John",
-    avatar: "panda",
+    name: "Andrew",
+    avatar: "andrew",
     pin: 5555,
     cash: 5000,
     seated: true,
@@ -21,7 +21,7 @@ const players = {
   },
   3: {
     name: "Stephen",
-    avatar: "dog",
+    avatar: "stephen",
     pin: 5555,
     cash: 5000,
     seated: true,
@@ -31,7 +31,67 @@ const players = {
   },
   4: {
     name: "Dave",
-    avatar: "giraffe",
+    avatar: "dave",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  5: {
+    name: "Kieran",
+    avatar: "kieran",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  6: {
+    name: "Simon",
+    avatar: "simon",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  7: {
+    name: "Liam",
+    avatar: "liam",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  8: {
+    name: "Andy",
+    avatar: "andy",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  9: {
+    name: "Paddy",
+    avatar: "paddy",
+    pin: 5555,
+    cash: 5000,
+    seated: true,
+    active: false,
+    folded: false,
+    dealer: false
+  },
+  10: {
+    name: "Steve",
+    avatar: "steve",
     pin: 5555,
     cash: 5000,
     seated: true,

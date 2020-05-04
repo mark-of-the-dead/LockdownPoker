@@ -164,6 +164,7 @@ class App extends React.Component {
       players
     });
   }
+  
 
   callBet = (player) => {
     this.betChips(player, this.state.players[player].currentBet ? this.state.round.currentBet - this.state.players[player].currentBet : this.state.round.currentBet);
@@ -317,7 +318,7 @@ class App extends React.Component {
         <button onClick={this.dealFlop}>Deal flop</button>
         <button onClick={this.dealTurn}>Deal turn</button>
         <button onClick={this.dealRiver}>Deal river</button>
-        <BlindManager players={this.state.players} assignDealer={this.assignDealer} />
+        <BlindManager players={this.state.players} assignDealer={this.assignDealer} betChips={this.betChips} />
         <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
 
 

@@ -4,7 +4,7 @@ import React from 'react';
 class BlindManager extends React.Component {
 
   idRef = React.createRef();
-  blingRef = React.createRef();
+  blindRef = React.createRef();
   bigBlindRef = React.createRef();
 
   assignDealer = (e) => {
@@ -20,6 +20,8 @@ class BlindManager extends React.Component {
 
   payBlinds = (e) => {
     e.preventDefault();
+    this.props.betChips(this.blindRef.current.value, 25);
+    this.props.betChips(this.bigBlindRef.current.value, 50);
   }
 
   render(){
@@ -34,12 +36,12 @@ class BlindManager extends React.Component {
         </form>
         <form className="set-blinds" onSubmit={this.payBlinds}>
         <p>Set Blinds:</p>
-        <select id="playerListBlind" name="playerlistBlind" ref={this.blindRef}>
+        <select id="playerListBlind" name="playerlistBlind" ref={this.blindRef} multiple>
           {Object.keys(this.props.players).map(
             key => this.props.players[key].seated ? <option key={key} value={key} >{this.props.players[key].name}</option> : ''
           )}
         </select>
-        <select id="playerListBigBlind" name="playerListBigBlind" ref={this.bigBlindRef}>
+        <select id="playerListBigBlind" name="playerListBigBlind" ref={this.bigBlindRef} multiple>
           {Object.keys(this.props.players).map(
             key => this.props.players[key].seated ? <option key={key} value={key} >{this.props.players[key].name}</option> : ''
           )}
