@@ -3,7 +3,7 @@ import React from 'react';
 
 class Player extends React.Component {
   render(){
-    const {avatar, cash, checked, currentBet, dealer, folded, name} = this.props.details;
+    const {avatar, cash, checked, currentBet, dealer, folded, name, seated} = this.props.details;
     let bet;
     let classAdditons = "";
     if(checked){
@@ -12,7 +12,7 @@ class Player extends React.Component {
     if(currentBet && !folded){
       bet = " (+" + currentBet + ")";
     }
-    if(folded){
+    if(folded || !seated){
       classAdditons += " folded";
     }
     if(dealer){

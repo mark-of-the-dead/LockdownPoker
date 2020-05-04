@@ -29,6 +29,14 @@ class PlayerUI extends React.Component {
     this.props.checkBet(this.props.id);
   }
 
+  stand = () => {
+    this.props.standPlayer(this.props.id);
+  }
+
+  sit = () => {
+    this.props.sitPlayer(this.props.id);
+  }
+
 
   render(){
     const player = this.props.player || {};
@@ -51,6 +59,7 @@ class PlayerUI extends React.Component {
             className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />{this.state.amountLabel}
           <button onClick={this.call}>Call</button>
           <button onClick={this.fold}>Fold</button>
+          {player.seated ? <button onClick={this.stand}>Sit Out</button> : <button onClick={this.sit}>Sit Down</button> }
         </div>
         <hr />
       </React.Fragment>

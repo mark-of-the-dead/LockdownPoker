@@ -61,7 +61,7 @@ class App extends React.Component {
     let handsObj = {};
     const communityObj = {};
     Object.keys(this.state.players).map(key => {
-      if(this.state.players[key].seated && !this.state.players[key].folded){ 
+      if(this.state.players[key].seated && !this.state.players[key].folded){
         let arr = [];
         for(let i=0;i<2;i++){
           const j = Math.floor(Math.random() * deck.length);
@@ -206,6 +206,28 @@ class App extends React.Component {
     });
   }
 
+  standPlayer = (playerid) => {
+    const {players} = this.state;
+    players[playerid].seated = false;
+    this.setState({
+      players
+    });
+  }
+
+  sitPlayer = (playerid) => {
+    const {players} = this.state;
+    players[playerid].seated = true;
+    this.setState({
+      players
+    });
+  }
+
+  startNewHand = () => {
+    this.resetSeatedPlayers();
+    this.dealHold();
+  }
+
+
   // next = (db, key) => {
   //   const keys = Object.keys(db)
   //     , i = keys.indexOf(key);
@@ -271,7 +293,7 @@ class App extends React.Component {
     });
   }
 
-  // getNextPlayer = (currentPlayer) => { 
+  // getNextPlayer = (currentPlayer) => {
   //   const {players, round} = this.state;
   //   const keys = Object.keys(players), i = keys.indexOf(currentPlayer) || 0;
   //   console.log(keys, i);
@@ -297,7 +319,7 @@ class App extends React.Component {
         <button onClick={this.dealRiver}>Deal river</button>
         <BlindManager players={this.state.players} assignDealer={this.assignDealer} />
         <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
-        
+
 
 <hr/>
         {/*
@@ -311,7 +333,9 @@ class App extends React.Component {
           betChips={this.betChips}
           foldPlayer={this.foldPlayer}
           callBet={this.callBet}
-          checkBet={this.checkBet} />
+          checkBet={this.checkBet}
+          standPlayer={this.standPlayer}
+          sitPlayer={this.sitPlayer} />
         )}
 
       </div>

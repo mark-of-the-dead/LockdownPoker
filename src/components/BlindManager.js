@@ -4,6 +4,8 @@ import React from 'react';
 class BlindManager extends React.Component {
 
   idRef = React.createRef();
+  blingRef = React.createRef();
+  bigBlindRef = React.createRef();
 
   assignDealer = (e) => {
     e.preventDefault();
@@ -16,15 +18,35 @@ class BlindManager extends React.Component {
     }
   }
 
+  payBlinds = (e) => {
+    e.preventDefault();
+  }
+
   render(){
     return (
+      <React.Fragment>
       <form className="set-dealer" onSubmit={this.assignDealer}>
-      <p>Set Dealer:</p>
-      <select id="playerList" name="playerlist" ref={this.idRef}>
-        {Object.keys(this.props.players).map(key => <option key={key} value={key} >{this.props.players[key].name}</option>)}
-      </select>
-      <button type="submit">Set Dealer</button>
+        <p>Set Dealer:</p>
+        <select id="playerList" name="playerlist" ref={this.idRef}>
+          {Object.keys(this.props.players).map(key => <option key={key} value={key} >{this.props.players[key].name}</option>)}
+        </select>
+        <button type="submit">Set Dealer</button>
+        </form>
+        <form className="set-blinds" onSubmit={this.payBlinds}>
+        <p>Set Blinds:</p>
+        <select id="playerListBlind" name="playerlistBlind" ref={this.blindRef}>
+          {Object.keys(this.props.players).map(
+            key => this.props.players[key].seated ? <option key={key} value={key} >{this.props.players[key].name}</option> : ''
+          )}
+        </select>
+        <select id="playerListBigBlind" name="playerListBigBlind" ref={this.bigBlindRef}>
+          {Object.keys(this.props.players).map(
+            key => this.props.players[key].seated ? <option key={key} value={key} >{this.props.players[key].name}</option> : ''
+          )}
+        </select>
+        <button type="submit">Force Blinds</button>
       </form>
+      </React.Fragment>
     )
   }
 }
