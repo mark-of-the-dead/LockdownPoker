@@ -1,7 +1,5 @@
 import React from 'react';
 
-import base from "../base"
-
 import Info from './Info';
 import Players from './Players';
 import Table from './Table';
@@ -16,6 +14,10 @@ import PlayerUI from './PlayerUI';
 
 import BlindManager from './BlindManager';
 import MoneyManager from './MoneyManager';
+
+import io from 'socket.io-client'
+
+let socket = io(`http://localhost:5000`)
 
 class App extends React.Component {
   constructor(props){
@@ -33,53 +35,44 @@ class App extends React.Component {
     deck: freshDeck
   };
 
+  syncState = (data) => {
+    this.setState({
+      players: data.players,
+      game: data.game,
+      hands: data.hands,
+      community: data.community,
+      round: data.round,
+      connections: data.connections
+    });
+  }
+
   componentDidMount(){
-    this.setGameConfig();
+    socket.on('state', this.syncState);
 
-    const { params } = this.props.match;
-    this.playerRef = base.syncState(`${params.tableId}/players`, {
-      context: this,
-      state: 'players'
-    });
-    this.gameRef = base.syncState(`${params.tableId}/game`, {
-      context: this,
-      state: 'game'
-    });
-    this.roundRef = base.syncState(`${params.tableId}/round`, {
-      context: this,
-      state: 'round'
-    });
+    socket.emit('new connection');
+
   }
 
-  componentWillUnmount(){
-    console.log('UNMOUNTING!');
-    base.removeBinding(this.ref);
-  }
+  // componentWillUnmount(){
+  //   console.log('UNMOUNTING!');
+  // }
 
-  closeTable = () => {
-    base.removeBinding(this.ref);
-  }
 
   addPlayer = (player) => {
-    const players = {...this.state.players}
-    players[`${Date.now()}`] = player;
-    this.setState({
-      players: players //players also works where names are the same
-    });
+    console.log(player);
+    socket.emit('add player', player );
   }
 
   loadSample = () => {
-    this.setState({
-      players: samplePlayers
-    });
+    socket.emit('load sample', samplePlayers );
   }
 
-  setGameConfig = () => {
-    this.setState({
-      game: { 'smallblind' : 25, 'startchips' : 5000},
-      round: {pots: [0], currentBet: 0}
-    })
-  }
+  // setGameConfig = () => {
+  //   this.setState({
+  //     game: { 'smallblind' : 25, 'startchips' : 5000},
+  //     round: {pots: [0], currentBet: 0}
+  //   })
+  // }
 
   resetDeck = () => {
     const newdeck = JSON.parse(JSON.stringify(freshDeck));
@@ -91,122 +84,32 @@ class App extends React.Component {
   }
 
   dealHold = () => {
-    const deck = JSON.parse(JSON.stringify(freshDeck));
-
-    let handsObj = {};
-    const communityObj = {};
-    Object.keys(this.state.players).map(key => {
-      if(this.state.players[key].seated && !this.state.players[key].folded){
-        let arr = [];
-        for(let i=0;i<2;i++){
-          const j = Math.floor(Math.random() * deck.length);
-          arr[i] = deck[j];
-          deck.splice(j,1);
-        }
-        handsObj[key] = arr;
-      }
-    });
-    this.setState({
-      hands: handsObj,
-      community: communityObj,
-      deck: deck
-    });
+    socket.emit('deal hold');
   }
 
   dealFlop = () => {
-    this.lockBets();
-    const {community, deck} = this.state;
-    let arr = [];
-    for(let i=0;i<3;i++){
-      const j = Math.floor(Math.random() * deck.length);
-      arr[i] = deck[j];
-      deck.splice(j,1);
-    }
-    community['flop'] = arr;
-
-    this.setState({
-      community: community,
-      deck: deck
-    });
+    socket.emit('deal flop');
   }
 
   dealTurn = () => {
-    this.lockBets();
-    const {community, deck} = this.state;
-
-    const j = Math.floor(Math.random() * deck.length);
-    community['turn'] = deck[j];
-    deck.splice(j,1);
-
-    this.setState({
-      community: community,
-      deck: deck
-    });
+    socket.emit('deal turn');
   }
 
   dealRiver = () => {
-    this.lockBets();
-    const {community, deck} = this.state;
-
-    const j = Math.floor(Math.random() * deck.length);
-    community['river'] = deck[j];
-    deck.splice(j,1);
-
-    this.setState({
-      community: community,
-      deck: deck
-    });
+    socket.emit('deal river');
   }
 
   betChips = (player, amount) => {
-    const {players, round, hands} = this.state;
-    const amt = parseInt(amount)
-
-    players[player].checked = false;
-    players[player].cash = players[player].cash - amt;
-    players[player]['currentBet'] = players[player]['currentBet'] + amt || amt;
-    round.pots[0] = round.pots[0] + amt;
-    console.log("Player '" + players[player].name + "'(ID:"+player+") wants to bet £" + amount);
-
-    let currentHighestBet = 0;
-    Object.keys(players).forEach(
-      key => currentHighestBet = players[key].currentBet > currentHighestBet ? players[key].currentBet : currentHighestBet
-    );
-
-    round['currentBet'] = currentHighestBet;
-
-    this.setState({
-      players,
-      round,
-      hands
-    });
+    socket.emit('bet', player, amount);
   }
 
-  foldPlayer = (player) => {
-    const {players} = this.state;
-    players[player].folded = true;
-    players[player].checked = false;
-    this.setState({
-      players
-    });
-  }
 
-  rebuy = (player) => {
-    const {players, game} = this.state;
-    players[player].cash += game.startchips;
-    this.setState({
-      players,
-      game
-    });
+  rebuy = (player) => { //ADMIN
+   socket.emit('rebuy', player);
   }
 
   assignDealer = (playerid) => {
-    const {players} = this.state;
-    Object.keys(players).forEach(key => players[key].dealer = false);
-    players[playerid].dealer = true;
-    this.setState({
-      players
-    });
+    socket.emit('assign dealer', playerid);
   }
 
 
@@ -215,56 +118,27 @@ class App extends React.Component {
   }
 
   checkBet = (player) => {
-    const {players} = this.state;
-    players[player].checked = true;
-    this.setState({
-      players
-    });
+    socket.emit('check bet', player);
   }
 
   lockBets = () => {
-    const {players, round} = this.state;
-    round['currentBet'] = 0;
-    Object.keys(players).forEach(
-      key => {
-        players[key].currentBet = 0;
-        players[key].checked = false;
-      }
-    );
-    this.setState({
-      players,
-      round
-    });
+    socket.emit('lock bets');
   }
 
   resetSeatedPlayers = () => {
-    const {players} = this.state;
-    Object.keys(players).forEach(key => {
-      if(players[key].seated){
-        players[key].folded = false;
-      }else{
-        players[key].folded = true;
-      }
-    })
-    this.setState({
-      players
-    });
+    socket.emit('reset players');
   }
 
   standPlayer = (playerid) => {
-    const {players} = this.state;
-    players[playerid].seated = false;
-    this.setState({
-      players
-    });
+    socket.emit('stand player', playerid );
   }
 
   sitPlayer = (playerid) => {
-    const {players} = this.state;
-    players[playerid].seated = true;
-    this.setState({
-      players
-    });
+    socket.emit('sit player', playerid );
+  }
+
+  foldPlayer = (playerid) => {
+    socket.emit('fold player', playerid );
   }
 
   startNewHand = () => {
@@ -273,93 +147,20 @@ class App extends React.Component {
   }
 
 
-  // next = (db, key) => {
-  //   const keys = Object.keys(db)
-  //     , i = keys.indexOf(key);
-  //   // if(db[keys[i + 1]].folded || !db[keys[i + 1]].seated){
-  //   //   console.log('player not in this round');
-  //   // }else{
-  //     return i !== -1 && keys[i + 1] && keys[i + 1];
-  //   // }
-  // }
-
-  // setActivePlayer = () => {
-  //   const {players} = this.state;
-  //   let activePlayerID = 0;
-  //   let i = 0;
-  //   let activePlayerIndex = 0;
-  //   Object.keys(players).forEach(key => {
-  //     i++
-  //     if(players[key].active){
-  //       activePlayerID = key;
-  //       activePlayerIndex = i;
-  //     }
-  //   })
-  //   if(activePlayerID > 0){
-  //     players[activePlayerID].active = false;
-  //     if(activePlayerIndex < Object.keys(players).length){
-  //       players[this.next(players, activePlayerID)].active = true;
-  //     }else{
-  //       players[Object.keys(players)[0]].active = true;
-  //     }
-  //   }else{
-  //     players[Object.keys(players)[0]].active = true; //make first player active. should actually be person with blind chip
-  //   }
-
-  //   this.setState({
-  //     players
-  //   });
-  // }
-
   sidePot = (amount) => {
-    //amount = amount of last pot to move into sidepot (the bit some player can't win)
-    const {round} = this.state
-    const amt = amount ? parseInt(amount) : 0;
-    round.pots.splice(0, 0, 0); //at index 0, without removing any items, add item zero;
-    round.pots[1] -= amt;
-    round.pots[0] += amt;
-    this.setState({
-      round
-    });
+    socket.emit('sidepot', amount);
   }
 
   splitPot = (playerIDs, potID) => {
-    const {players, round} = this.state;
-    const payout = Math.floor(round.pots[potID] / playerIDs.length);
-    playerIDs.forEach(
-      key => {
-        players[key].cash += payout;
-        round.pots[potID] -= payout;
-      }
-    );
-    this.setState({
-      players,
-      round
-    });
+    socket.emit('splitPot',  playerIDs, potID);
   }
 
   moveMoney = (fromPlayer, toPlayer, amount) => {
-    const {players} = this.state;
-    const amt = parseInt(amount);
-    if(parseInt(players[fromPlayer].cash) > amt){
-      players[fromPlayer].cash -= amt;
-      players[toPlayer].cash += amt;
-    }
-    this.setState({
-      players
-    });
+    socket.emit('move money', fromPlayer, toPlayer, amount)
   }
 
   movePotMoney = (fromPot, toPot, amount) => {
-    const {round} = this.state;
-    const amt = parseInt(amount);
-    if(typeof round.pots[fromPot] !== 'undefined' && typeof round.pots[toPot] !== 'undefined' && parseInt(round.pots[fromPot]) >= amt){
-      round.pots[fromPot] -= amt;
-      round.pots[toPot] += amt;
-    }
-    this.setState({
-      round
-    });
+    socket.emit('move pmoney', fromPot, toPot, amount)
   }
 
   // getNextPlayer = (currentPlayer) => {

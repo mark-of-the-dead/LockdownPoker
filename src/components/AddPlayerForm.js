@@ -12,12 +12,7 @@ class AddPlayerForm extends React.Component {
     const player = {
       name: this.nameRef.current.value,
       avatar: this.avatarRef.current.value,
-      pin: parseInt(this.pinRef.current.value),
-      cash: 5000,
-      seated: false,
-      active: false,
-      folded: false,
-      dealer: false
+      pin: parseInt(this.pinRef.current.value)
     }
     this.props.addPlayer(player);
     e.currentTarget.reset();
