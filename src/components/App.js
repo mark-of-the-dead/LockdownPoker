@@ -181,24 +181,13 @@ class App extends React.Component {
 
 <hr/>
 
-        <AddPlayerForm addPlayer={this.addPlayer} />
-        <button onClick={this.loadSample}>Load Sample</button>
-        <button onClick={this.dealHold}>Deal new hand</button>
-        <button onClick={this.dealFlop}>Deal flop</button>
-        <button onClick={this.dealTurn}>Deal turn</button>
-        <button onClick={this.dealRiver}>Deal river</button>
-        <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
-        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
-
-
-<hr/>
-        {/*
+         {/*
         {Object.keys(this.state.hands).map(key => <HoldCards key={key} playerId={key}  cards={this.state.hands[key]} />)}
         */}
 
 <hr/>
 
-        {Object.keys(this.state.players).map(
+        {/* {Object.keys(this.state.players).map(
           key => <PlayerUI key={key} id={key} player={this.state.players[key]}  cards={this.state.hands[key]}
           betChips={this.betChips}
           foldPlayer={this.foldPlayer}
@@ -206,7 +195,7 @@ class App extends React.Component {
           checkBet={this.checkBet}
           standPlayer={this.standPlayer}
           sitPlayer={this.sitPlayer} />
-        )}
+        )} */}
 
       </div>
     )

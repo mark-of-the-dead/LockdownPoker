@@ -19,7 +19,7 @@ import io from 'socket.io-client'
 
 let socket = io(`http://localhost:5000`)
 
-class Admin extends React.Component {
+class App extends React.Component {
   constructor(props){
     super(props)
     // this.resetDeck = this.resetDeck.bind(this);
@@ -163,48 +163,26 @@ class Admin extends React.Component {
     socket.emit('move pmoney', fromPot, toPot, amount)
   }
 
-  // getNextPlayer = (currentPlayer) => {
-  //   const {players, round} = this.state;
-  //   const keys = Object.keys(players), i = keys.indexOf(currentPlayer) || 0;
-  //   console.log(keys, i);
-  //   // Object.keys(players).map(key => {
-  //   //   if(players)
-  //   // })
-  // }
+
 
   render(){
+    const playerId = this.props.match.params.playerId;
+    const playerTitle = this.state.players[playerId] ? this.state.players[playerId].name + "(#" + playerId + ")" : '';
+
     return (
       <div className="react-poker">
-        {/* <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
-        <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
-        <Table cards={this.state.community} /> */}
-
-<hr/>
-
-        <AddPlayerForm addPlayer={this.addPlayer} />
-        <div className="hand-controls">
-          <button onClick={this.loadSample}>Load Sample</button>
-          <button onClick={this.dealHold}>Deal new hand</button>
-          <button onClick={this.dealFlop}>Deal flop</button>
-          <button onClick={this.dealTurn}>Deal turn</button>
-          <button onClick={this.dealRiver}>Deal river</button>
-        </div>
-        <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
-        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} />
-
-
-<hr/>
-        {/*
-        {Object.keys(this.state.hands).map(key => <HoldCards key={key} playerId={key}  cards={this.state.hands[key]} />)}
-        */}
-
-
+       <h1>{playerTitle}</h1>
+       <PlayerUI id={playerId} player={this.state.players[playerId]}  cards={this.state.hands[playerId]}
+          betChips={this.betChips}
+          foldPlayer={this.foldPlayer}
+          callBet={this.callBet}
+          checkBet={this.checkBet}
+          standPlayer={this.standPlayer}
+          sitPlayer={this.sitPlayer} />
 
       </div>
     )
   }
 }
 
-
-
-export default Admin;
+export default App;
