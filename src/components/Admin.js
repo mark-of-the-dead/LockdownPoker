@@ -49,7 +49,7 @@ class Admin extends React.Component {
   componentDidMount(){
     socket.on('state', this.syncState);
 
-    socket.emit('new connection');
+    socket.emit('new admin');
 
   }
 
@@ -184,6 +184,7 @@ class Admin extends React.Component {
         <AddPlayerForm addPlayer={this.addPlayer} />
         <div className="hand-controls">
           <button onClick={this.loadSample}>Load Sample</button>
+          <button onClick={this.resetSeatedPlayers}>reset Players</button>
           <button onClick={this.dealHold}>Deal new hand</button>
           <button onClick={this.dealFlop}>Deal flop</button>
           <button onClick={this.dealTurn}>Deal turn</button>

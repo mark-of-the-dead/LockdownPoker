@@ -20,6 +20,10 @@ import io from 'socket.io-client'
 let socket = io(`http://localhost:5000`)
 
 class App extends React.Component {
+
+  // idRef = React.createRef();
+  pinRef = React.createRef();
+
   constructor(props){
     super(props)
     // this.resetDeck = this.resetDeck.bind(this);
@@ -38,95 +42,49 @@ class App extends React.Component {
   syncState = (data) => {
     this.setState({
       players: data.players,
-      game: data.game,
-      hands: data.hands,
-      community: data.community,
-      round: data.round,
       connections: data.connections
     });
   }
 
+  syncHand = (data) => {
+    this.setState({
+      hands: data.hands
+    });
+  }
+
+  hideLogin = () => {
+    document.getElementById('playerPicker').classList.add('hidden');
+  }
+  
   componentDidMount(){
     socket.on('state', this.syncState);
+    socket.on('hand', this.syncHand);
+    socket.on('login success', this.hideLogin);
 
     socket.emit('new connection');
 
+    if(window.localStorage.getItem('savedplayer') !== null){
+      setTimeout(function(){
+        const data = JSON.parse(window.localStorage.getItem('savedplayer'));
+        socket.emit('claim player', data[0], data[1], socket.id, true);
+      }, 1000)
+    }
   }
 
-  // componentWillUnmount(){
-  //   console.log('UNMOUNTING!');
-  // }
-
-
-  addPlayer = (player) => {
-    console.log(player);
-    socket.emit('add player', player );
-  }
-
-  loadSample = () => {
-    socket.emit('load sample', samplePlayers );
-  }
-
-  // setGameConfig = () => {
-  //   this.setState({
-  //     game: { 'smallblind' : 25, 'startchips' : 5000},
-  //     round: {pots: [0], currentBet: 0}
-  //   })
-  // }
-
-  resetDeck = () => {
-    const newdeck = JSON.parse(JSON.stringify(freshDeck));
-
-    this.setState({
-      deck: newdeck
-    });
-
-  }
-
-  dealHold = () => {
-    socket.emit('deal hold');
-  }
-
-  dealFlop = () => {
-    socket.emit('deal flop');
-  }
-
-  dealTurn = () => {
-    socket.emit('deal turn');
-  }
-
-  dealRiver = () => {
-    socket.emit('deal river');
+  removeSave = () => {
+    window.localStorage.removeItem('savedplayer');
   }
 
   betChips = (player, amount) => {
     socket.emit('bet', player, amount);
   }
 
-
-  rebuy = (player) => { //ADMIN
-   socket.emit('rebuy', player);
-  }
-
-  assignDealer = (playerid) => {
-    socket.emit('assign dealer', playerid);
-  }
-
-
   callBet = (player) => {
-    this.betChips(player, this.state.players[player].currentBet ? this.state.round.currentBet - this.state.players[player].currentBet : this.state.round.currentBet);
+    socket.emit('call bet', player);
   }
 
   checkBet = (player) => {
     socket.emit('check bet', player);
-  }
-
-  lockBets = () => {
-    socket.emit('lock bets');
-  }
-
-  resetSeatedPlayers = () => {
-    socket.emit('reset players');
   }
 
   standPlayer = (playerid) => {
@@ -141,44 +99,35 @@ class App extends React.Component {
     socket.emit('fold player', playerid );
   }
 
-  startNewHand = () => {
-    this.resetSeatedPlayers();
-    this.dealHold();
+  claimPlayer = (e) => {
+    e.preventDefault();
+    socket.emit('claim player', this.props.match.params.playerId, this.pinRef.current.value, socket.id, false);
+    window.localStorage.setItem('savedplayer', JSON.stringify([this.props.match.params.playerId, this.pinRef.current.value, Date.now()]));
   }
-
-
-  sidePot = (amount) => {
-    socket.emit('sidepot', amount);
-  }
-
-  splitPot = (playerIDs, potID) => {
-    socket.emit('splitPot',  playerIDs, potID);
-  }
-
-  moveMoney = (fromPlayer, toPlayer, amount) => {
-    socket.emit('move money', fromPlayer, toPlayer, amount)
-  }
-
-  movePotMoney = (fromPot, toPot, amount) => {
-    socket.emit('move pmoney', fromPot, toPot, amount)
-  }
-
-
+  
 
   render(){
-    const playerId = this.props.match.params.playerId;
+    let playerId = this.props.match.params.playerId;
     const playerTitle = this.state.players[playerId] ? this.state.players[playerId].name + "(#" + playerId + ")" : '';
 
     return (
-      <div className="react-poker">
-       <h1>{playerTitle}</h1>
-       <PlayerUI id={playerId} player={this.state.players[playerId]}  cards={this.state.hands[playerId]}
+      <div className="react-poker-player">
+        <div className="player-picker" id="playerPicker">
+          <form onSubmit={this.claimPlayer}>
+            
+            <label>Pin:</label><input type="text" name="playerpin" ref={this.pinRef}/>
+            <button type="submit">Login</button>
+          </form>
+        </div>
+        <h1>{playerTitle}</h1>
+        <PlayerUI id={playerId} player={this.state.players[playerId]}  cards={this.state.hands[playerId]}
           betChips={this.betChips}
           foldPlayer={this.foldPlayer}
           callBet={this.callBet}
           checkBet={this.checkBet}
           standPlayer={this.standPlayer}
           sitPlayer={this.sitPlayer} />
+          <button onClick={this.removeSave}>Log out</button>
 
       </div>
     )

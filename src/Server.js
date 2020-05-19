@@ -36,6 +36,16 @@ state = {
   deck: freshDeck
 };
 
+create_UUID = () => {
+  var dt = new Date().getTime();
+  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (dt + Math.random()*16)%16 | 0;
+      dt = Math.floor(dt/16);
+      return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+  });
+  return uuid;
+}
+
 addPlayer = (player) => {
   state.players[`${Date.now()}`] = player;
 }
@@ -198,10 +208,47 @@ loadSample = (sample) => {
   state.players = sample;
 }
 
+assignConnection = (id, pin, socket, autoassign) => {
+  console.log('debug-',id, pin, socket, autoassign);
+  if(id && pin){
+    if(state.players[id]){
+      if(!state.players[id].assigned){
+        if(!connections[socket]){
+          if(parseInt(state.players[id].pin) === parseInt(pin)){
+            connections[socket] = id;
+            state.players[id].assigned = true;
+            console.log('connections-', connections);
+
+            io.sockets.sockets[socket].emit('login success');
+  
+            connections[socket].updateCycle = setInterval(function() {
+              if(connections[socket] && io.sockets.sockets[socket]){
+                const handObj = {};
+                handObj[id] = state.hands[id];
+                io.sockets.sockets[socket].emit('hand', {
+                  hands : handObj
+                });
+              }
+            }, 1000 / 30);
+  
+          }else{
+            console.log('failed login as ' + state.players[id].name + ' from ' + socket);
+          }
+        }else{
+          const currentid = connections[socket];
+          console.log('socket already assigned player - ', state.players[currentid].name);
+        }
+      }else{
+        console.log('player already assigned ', state.players[id].name, socket);
+      }
+    }
+  }
+}
+
 var connections = {};
 io.on('connection', function(socket) {
   socket.on('new connection', function() {
-    connections[socket.id] = {};
+    connections[socket.id] = '';
   });
   socket.on('add player', function(data) {
     const fixedVals = {
@@ -209,7 +256,8 @@ io.on('connection', function(socket) {
       seated: false,
       active: false,
       folded: false,
-      dealer: false
+      dealer: false,
+      assigned: false
     }
     const player = {...data, ...fixedVals}
     addPlayer(player);
@@ -234,10 +282,14 @@ io.on('connection', function(socket) {
   socket.on('deal river', dealRiver);
   socket.on('load sample', loadSample);
   socket.on('assign dealer', assignDealer);
+  socket.on('claim player', assignConnection);
 
   socket.on('disconnect', function() {
     if(connections[socket.id]){
-      delete connections[socket.id]
+      var id = connections[socket.id];
+      state.players[id].assigned = false;
+      clearInterval(connections[socket.id].updateCycle);
+      delete connections[socket.id];
     }
     // remove disconnected player
   });
@@ -260,3 +312,9 @@ setInterval(function() {
     connections: connections
   });
 }, 1000 / 30);
+
+// setInterval(function() {
+//   io.sockets.emit('hand', {
+//     hands : state.hands // ALL HANDS
+//   });
+// }, 1000 / 30);
