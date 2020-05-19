@@ -1,11 +1,16 @@
-.player-box img{
-    border:2px solid #ddd;
-}
+.player-box
+    img
+        border:2px solid #ddd
+        display inline-block
+        margin-right 5px
+        vertical-align middle
 
-.player-box.dealer img{
-    border:2px solid #0f0;
-}
+.player-box
+    &.dealer
+        img
+            border:2px solid #0f0;
 
-.player-box.folded {
-    opacity: 0.5;
-}
+
+.player-box
+    &.folded
+        opacity: 0.5;

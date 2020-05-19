@@ -174,18 +174,16 @@ class App extends React.Component {
 
   render(){
     return (
-      <div className="react-poker">
+      <div className="react-poker tableview">
         <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
         <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
 
-<hr/>
 
          {/*
         {Object.keys(this.state.hands).map(key => <HoldCards key={key} playerId={key}  cards={this.state.hands[key]} />)}
         */}
 
-<hr/>
 
         {/* {Object.keys(this.state.players).map(
           key => <PlayerUI key={key} id={key} player={this.state.players[key]}  cards={this.state.hands[key]}
