@@ -32,58 +32,72 @@
     100% { -moz-transform: translateY(0px); opacity: 1; }
 }
 
-.table-card.HA { background-image: url('images/cards/card_H_A.png')}
-.table-card.H2 { background-image: url('images/cards/card_H_2.png')}
-.table-card.H3 { background-image: url('images/cards/card_H_3.png')}
-.table-card.H4 { background-image: url('images/cards/card_H_4.png')}
-.table-card.H5 { background-image: url('images/cards/card_H_5.png')}
-.table-card.H6 { background-image: url('images/cards/card_H_6.png')}
-.table-card.H7 { background-image: url('images/cards/card_H_7.png')}
-.table-card.H8 { background-image: url('images/cards/card_H_8.png')}
-.table-card.H9 { background-image: url('images/cards/card_H_9.png')}
-.table-card.HJ { background-image: url('images/cards/card_H_J.png')}
-.table-card.HQ { background-image: url('images/cards/card_H_Q.png')}
-.table-card.HK { background-image: url('images/cards/card_H_K.png')}
-.table-card.H10 { background-image: url('images/cards/card_H_10.png')}
 
-.table-card.DA { background-image: url('images/cards/card_D_A.png')}
-.table-card.D2 { background-image: url('images/cards/card_D_2.png')}
-.table-card.D3 { background-image: url('images/cards/card_D_3.png')}
-.table-card.D4 { background-image: url('images/cards/card_D_4.png')}
-.table-card.D5 { background-image: url('images/cards/card_D_5.png')}
-.table-card.D6 { background-image: url('images/cards/card_D_6.png')}
-.table-card.D7 { background-image: url('images/cards/card_D_7.png')}
-.table-card.D8 { background-image: url('images/cards/card_D_8.png')}
-.table-card.D9 { background-image: url('images/cards/card_D_9.png')}
-.table-card.DJ { background-image: url('images/cards/card_D_J.png')}
-.table-card.DQ { background-image: url('images/cards/card_D_Q.png')}
-.table-card.DK { background-image: url('images/cards/card_D_K.png')}
-.table-card.D10 { background-image: url('images/cards/card_D_10.png')}
+.hold-cards
+    .holdcard
+        display inline-block
+        width 100px
+        height 140px
+        border-radius 10px
+        margin 5px
+        background-size contain
+        overflow hidden
+        text-indent -9868px
+        &.blank
+            border 1px solid #ccc
 
-.table-card.CA { background-image: url('images/cards/card_C_A.png')}
-.table-card.C2 { background-image: url('images/cards/card_C_2.png')}
-.table-card.C3 { background-image: url('images/cards/card_C_3.png')}
-.table-card.C4 { background-image: url('images/cards/card_C_4.png')}
-.table-card.C5 { background-image: url('images/cards/card_C_5.png')}
-.table-card.C6 { background-image: url('images/cards/card_C_6.png')}
-.table-card.C7 { background-image: url('images/cards/card_C_7.png')}
-.table-card.C8 { background-image: url('images/cards/card_C_8.png')}
-.table-card.C9 { background-image: url('images/cards/card_C_9.png')}
-.table-card.CJ { background-image: url('images/cards/card_C_J.png')}
-.table-card.CQ { background-image: url('images/cards/card_C_Q.png')}
-.table-card.CK { background-image: url('images/cards/card_C_K.png')}
-.table-card.C10 { background-image: url('images/cards/card_C_10.png')}
 
-.table-card.SA { background-image: url('images/cards/card_S_A.png')}
-.table-card.S2 { background-image: url('images/cards/card_S_2.png')}
-.table-card.S3 { background-image: url('images/cards/card_S_3.png')}
-.table-card.S4 { background-image: url('images/cards/card_S_4.png')}
-.table-card.S5 { background-image: url('images/cards/card_S_5.png')}
-.table-card.S6 { background-image: url('images/cards/card_S_6.png')}
-.table-card.S7 { background-image: url('images/cards/card_S_7.png')}
-.table-card.S8 { background-image: url('images/cards/card_S_8.png')}
-.table-card.S9 { background-image: url('images/cards/card_S_9.png')}
-.table-card.SJ { background-image: url('images/cards/card_S_J.png')}
-.table-card.SQ { background-image: url('images/cards/card_S_Q.png')}
-.table-card.SK { background-image: url('images/cards/card_S_K.png')}
-.table-card.S10 { background-image: url('images/cards/card_S_10.png')}
+
+.holdcard.HA, .table-card.HA, .revealcard.HA { background-image: url('images/cards/card_H_A.png')}
+.holdcard.H2, .table-card.H2, .revealcard.H2 { background-image: url('images/cards/card_H_2.png')}
+.holdcard.H3, .table-card.H3, .revealcard.H3 { background-image: url('images/cards/card_H_3.png')}
+.holdcard.H4, .table-card.H4, .revealcard.H4 { background-image: url('images/cards/card_H_4.png')}
+.holdcard.H5, .table-card.H5, .revealcard.H5 { background-image: url('images/cards/card_H_5.png')}
+.holdcard.H6, .table-card.H6, .revealcard.H6 { background-image: url('images/cards/card_H_6.png')}
+.holdcard.H7, .table-card.H7, .revealcard.H7 { background-image: url('images/cards/card_H_7.png')}
+.holdcard.H8, .table-card.H8, .revealcard.H8 { background-image: url('images/cards/card_H_8.png')}
+.holdcard.H9, .table-card.H9, .revealcard.H9 { background-image: url('images/cards/card_H_9.png')}
+.holdcard.HJ, .table-card.HJ, .revealcard.HJ { background-image: url('images/cards/card_H_J.png')}
+.holdcard.HQ, .table-card.HQ, .revealcard.HQ { background-image: url('images/cards/card_H_Q.png')}
+.holdcard.HK, .table-card.HK, .revealcard.HK { background-image: url('images/cards/card_H_K.png')}
+.holdcard.H10, .table-card.H10, .revealcard.H10 { background-image: url('images/cards/card_H_10.png')}
+.holdcard.DA, .table-card.DA, .revealcard.DA { background-image: url('images/cards/card_D_A.png')}
+.holdcard.D2, .table-card.D2, .revealcard.D2 { background-image: url('images/cards/card_D_2.png')}
+.holdcard.D3, .table-card.D3, .revealcard.D3 { background-image: url('images/cards/card_D_3.png')}
+.holdcard.D4, .table-card.D4, .revealcard.D4 { background-image: url('images/cards/card_D_4.png')}
+.holdcard.D5, .table-card.D5, .revealcard.D5 { background-image: url('images/cards/card_D_5.png')}
+.holdcard.D6, .table-card.D6, .revealcard.D6 { background-image: url('images/cards/card_D_6.png')}
+.holdcard.D7, .table-card.D7, .revealcard.D7 { background-image: url('images/cards/card_D_7.png')}
+.holdcard.D8, .table-card.D8, .revealcard.D8 { background-image: url('images/cards/card_D_8.png')}
+.holdcard.D9, .table-card.D9, .revealcard.D9 { background-image: url('images/cards/card_D_9.png')}
+.holdcard.DJ, .table-card.DJ, .revealcard.DJ { background-image: url('images/cards/card_D_J.png')}
+.holdcard.DQ, .table-card.DQ, .revealcard.DQ { background-image: url('images/cards/card_D_Q.png')}
+.holdcard.DK, .table-card.DK, .revealcard.DK { background-image: url('images/cards/card_D_K.png')}
+.holdcard.D10, .table-card.D10, .revealcard.D10 { background-image: url('images/cards/card_D_10.png')}
+.holdcard.CA, .table-card.CA, .revealcard.CA { background-image: url('images/cards/card_C_A.png')}
+.holdcard.C2, .table-card.C2, .revealcard.C2 { background-image: url('images/cards/card_C_2.png')}
+.holdcard.C3, .table-card.C3, .revealcard.C3 { background-image: url('images/cards/card_C_3.png')}
+.holdcard.C4, .table-card.C4, .revealcard.C4 { background-image: url('images/cards/card_C_4.png')}
+.holdcard.C5, .table-card.C5, .revealcard.C5 { background-image: url('images/cards/card_C_5.png')}
+.holdcard.C6, .table-card.C6, .revealcard.C6 { background-image: url('images/cards/card_C_6.png')}
+.holdcard.C7, .table-card.C7, .revealcard.C7 { background-image: url('images/cards/card_C_7.png')}
+.holdcard.C8, .table-card.C8, .revealcard.C8 { background-image: url('images/cards/card_C_8.png')}
+.holdcard.C9, .table-card.C9, .revealcard.C9 { background-image: url('images/cards/card_C_9.png')}
+.holdcard.CJ, .table-card.CJ, .revealcard.CJ { background-image: url('images/cards/card_C_J.png')}
+.holdcard.CQ, .table-card.CQ, .revealcard.CQ { background-image: url('images/cards/card_C_Q.png')}
+.holdcard.CK, .table-card.CK, .revealcard.CK { background-image: url('images/cards/card_C_K.png')}
+.holdcard.C10, .table-card.C10, .revealcard.C10 { background-image: url('images/cards/card_C_10.png')}
+.holdcard.SA, .table-card.SA, .revealcard.SA { background-image: url('images/cards/card_S_A.png')}
+.holdcard.S2, .table-card.S2, .revealcard.S2 { background-image: url('images/cards/card_S_2.png')}
+.holdcard.S3, .table-card.S3, .revealcard.S3 { background-image: url('images/cards/card_S_3.png')}
+.holdcard.S4, .table-card.S4, .revealcard.S4 { background-image: url('images/cards/card_S_4.png')}
+.holdcard.S5, .table-card.S5, .revealcard.S5 { background-image: url('images/cards/card_S_5.png')}
+.holdcard.S6, .table-card.S6, .revealcard.S6 { background-image: url('images/cards/card_S_6.png')}
+.holdcard.S7, .table-card.S7, .revealcard.S7 { background-image: url('images/cards/card_S_7.png')}
+.holdcard.S8, .table-card.S8, .revealcard.S8 { background-image: url('images/cards/card_S_8.png')}
+.holdcard.S9, .table-card.S9, .revealcard.S9 { background-image: url('images/cards/card_S_9.png')}
+.holdcard.SJ, .table-card.SJ, .revealcard.SJ { background-image: url('images/cards/card_S_J.png')}
+.holdcard.SQ, .table-card.SQ, .revealcard.SQ { background-image: url('images/cards/card_S_Q.png')}
+.holdcard.SK, .table-card.SK, .revealcard.SK { background-image: url('images/cards/card_S_K.png')}
+.holdcard.S10, .table-card.S10, .revealcard.S10 { background-image: url('images/cards/card_S_10.png')}
+.holdcard.back, .table-card.back, .revealcard.back { background-image: url('images/cards/card_back.png')}

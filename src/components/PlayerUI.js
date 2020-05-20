@@ -40,18 +40,21 @@ class PlayerUI extends React.Component {
 
   render(){
     const player = this.props.player || {};
-    let card1, card2;
+    let card1, card2, addClass;
     if(this.props.cards){
       card1 = this.props.cards[0];
       card2 = this.props.cards[1];
+      addClass = ''
+    }else{
+      addClass = ' blank'
     }
     return (
       <React.Fragment>
         <div className="player-ui">
           {player.name}({this.props.id})
           <div className="hold-cards">
-            <span className={`holdcard `+card1}>{card1}</span>
-            <span className={`holdcard `+card2}>{card2}</span>
+            <span className={`holdcard ${card1}${addClass}`}>{card1}</span>
+            <span className={`holdcard ${card2}${addClass}`}>{card2}</span>
           </div>
           {!player.currentBet ? <button onClick={this.check}>Check</button> : null }
           <button onClick={this.placeBet}>Bet</button>

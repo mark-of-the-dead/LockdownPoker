@@ -45,13 +45,17 @@ header.top
 .table
   background-color tablegreen
   padding 20px
-  margin 0 40px 0 80px
+  margin 0 auto
+  margin-top 50px
   text-align center
   ul
       width 565px
       height 140px
-      margin auto
+      margin 110px 70px
       text-align left
+  height 400px
+  width 800px
+  border-radius 200px
 
 
 // Game info
@@ -62,6 +66,51 @@ header.top
   right 0
   text-align right
 
+
+
+// Revealed Hands
+
+.reveal-list
+  list-style none
+  text-align center
+
+  .revealedhand
+    display inline-block
+    width 150px
+    height 160px
+    margin-right 10px
+    position relative
+    text-align center
+    -webkit-animation  slideUp 0.5s forwards
+    animation  slideUp 0.5s forwards
+
+    .revealcard
+      position absolute
+      display inline-block
+      width 100px
+      height 140px
+      border-radius 10px
+      background-size contain
+      top 30px
+      &:nth-child(1)
+        left 0
+        -webkit-transform rotateZ(-3deg)
+        -ms-transform rotateZ(-3deg)
+        transform rotateZ(-3deg)
+      &:nth-child(2)
+        left 50px
+        -webkit-transform rotateZ(3deg)
+        -ms-transform rotateZ(3deg)
+        transform rotateZ(3deg)
+
+@-webkit-keyframes slideUp {
+    0% { -webkit-transform: translateY(200px); opacity: 0; }
+    100% { -webkit-transform: translateY(0px); opacity: 1; }
+}
+@-moz-keyframes slideUp {
+    0% { -moz-transform: translateY(200px); opacity: 0; }
+    100% { -moz-transform: translateY(0px); opacity: 1; }
+}
 
 // Player list
 

@@ -4,16 +4,10 @@ import Info from './Info';
 import Players from './Players';
 import Table from './Table';
 
-import AddPlayerForm from './AddPlayerForm';
 import samplePlayers from '../sample-players';
 import freshDeck from '../fresh-deck';
 
-import HoldCards from './holdCards';
-
-import PlayerUI from './PlayerUI';
-
-import BlindManager from './BlindManager';
-import MoneyManager from './MoneyManager';
+import RevealedHands from './RevealedHands';
 
 import io from 'socket.io-client'
 
@@ -32,6 +26,7 @@ class App extends React.Component {
     hands: {},
     community: {},
     round: {},
+    revealed: {},
     deck: freshDeck
   };
 
@@ -42,6 +37,7 @@ class App extends React.Component {
       hands: data.hands,
       community: data.community,
       round: data.round,
+      revealed: data.revealed,
       connections: data.connections
     });
   }
@@ -178,6 +174,7 @@ class App extends React.Component {
         <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
         <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
+        <RevealedHands hands={this.state.revealed} />
 
 
          {/*

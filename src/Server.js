@@ -33,6 +33,7 @@ state = {
   hands: {},
   community: {},
   round: {pots: [0], currentBet: 0},
+  revealed: {},
   deck: freshDeck
 };
 
@@ -155,6 +156,7 @@ callBet = (player) => {
 
 
 dealHold = () => {
+  resetSeatedPlayers();
   state.deck = JSON.parse(JSON.stringify(freshDeck));
 
   console.log(state.deck); 
@@ -309,6 +311,7 @@ setInterval(function() {
     hands : state.hands,
     community : state.community,
     round : state.round,
+    revealed : state.revealed,
     connections: connections
   });
 }, 1000 / 30);
