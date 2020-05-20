@@ -1,11 +1,35 @@
-.table-card {
-    display:inline-block;
-    width:100px;
-    height: 140px;
-    background-size: contain;
-    margin-right: 5px;
-    overflow: hidden;
-    text-indent: -9868px;
+.table-card
+    display inline-block
+    width 100px
+    height 140px
+    background-size contain
+    margin-right 5px
+    overflow hidden
+    text-indent -9868px
+
+    -webkit-animation  slideDown 0.5s forwards
+    animation  slideDown 0.5s forwards
+
+    // -webkit-transform rotateZ(-3deg)
+    // -ms-transform rotateZ(-3deg)
+    // transform rotateZ(-3deg)
+
+.table-card:nth-child(2)
+    animation-delay 0.25s
+    opacity 0
+
+.table-card:nth-child(3)
+    animation-delay 0.5s
+    opacity 0
+
+
+@-webkit-keyframes slideDown {
+    0% { -webkit-transform: translateY(-150px); opacity: 0; }
+    100% { -webkit-transform: translateY(0px); opacity: 1; }
+}
+@-moz-keyframes slideDown {
+    0% { -moz-transform: translateY(-150px); opacity: 0; }
+    100% { -moz-transform: translateY(0px); opacity: 1; }
 }
 
 .table-card.HA { background-image: url('images/cards/card_H_A.png')}

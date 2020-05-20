@@ -70,6 +70,28 @@
   margin-right: 5px;
   overflow: hidden;
   text-indent: -9868px;
+  -webkit-animation: slideDown 0.5s forwards;
+  animation: slideDown 0.5s forwards;
+}
+.table-card:nth-child(2) {
+  -webkit-animation-delay: 0.25s;
+          animation-delay: 0.25s;
+  opacity: 0;
+}
+.table-card:nth-child(3) {
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  opacity: 0;
+}
+@-webkit-keyframes slideDown {
+  0% {
+    -webkit-transform: translateY(-150px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0px);
+    opacity: 1;
+  }
 }
 .table-card.HA {
   background-image: url("images/cards/card_H_A.png");
@@ -482,6 +504,12 @@ header.top h3:after {
   padding: 20px;
   margin: 0 40px 0 80px;
   text-align: center;
+}
+.table ul {
+  width: 565px;
+  height: 140px;
+  margin: auto;
+  text-align: left;
 }
 .game-info {
   position: absolute;
