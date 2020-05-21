@@ -22,6 +22,10 @@ class PlayerUI extends React.Component {
     this.props.foldPlayer(this.props.id);
   }
 
+  reveal = () => {
+    this.props.revealHand(this.props.id);
+  }
+
   call = () => {
     this.props.callBet(this.props.id);
   }
@@ -62,6 +66,7 @@ class PlayerUI extends React.Component {
             className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />{this.state.amountLabel}
           <button onClick={this.call}>Call</button>
           <button onClick={this.fold}>Fold</button>
+          <button onClick={this.reveal}>Reveal</button>
           {player.seated ? <button onClick={this.stand}>Sit Out</button> : <button onClick={this.sit}>Sit Down</button> }
         </div>
         <hr />

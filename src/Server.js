@@ -62,6 +62,28 @@ sitPlayer = (id) => {
 foldPlayer = (id) => {
   state.players[id].folded = true;
   state.players[id].checked = false;
+  state.revealed[id] = {
+    'name': state.players[id].name,
+    'hand': ["back", "back"]
+  };
+  setTimeout(function(){
+    delete state.revealed[id];
+  }, 5000)
+}
+
+revealHand = (id, socket) => {
+  if(parseInt(connections[socket]) === parseInt(id)){
+    state.revealed[id] = {
+      'name': state.players[id].name,
+      'hand': state.hands[id]
+    };
+  }else{
+    let tmpID = connections[socket];
+    console.log('REVEAL log - ', state.players, id, socket, tmpID);
+    if(tmpID && id && state.players.length>0){
+      console.log(state.players[tmpID].name, 'is attempting to reveal hand for player - ', state.players[id].name);
+    }
+  }
 }
 
 rebuy = (id) => {
@@ -131,7 +153,7 @@ checkBet = (player) => {
   state.players[player].checked = true;
 }
 
-betChips = (player, amount) => {
+betChips = (player, amount) => { // take blind into account?
   const amt = parseInt(amount)
 
   state.players[player].checked = false;
@@ -156,7 +178,9 @@ callBet = (player) => {
 
 
 dealHold = () => {
+  lockBets();
   resetSeatedPlayers();
+  state.revealed = {};
   state.deck = JSON.parse(JSON.stringify(freshDeck));
 
   console.log(state.deck); 
@@ -268,6 +292,7 @@ io.on('connection', function(socket) {
   socket.on('stand player', standPlayer);
   socket.on('sit player', sitPlayer);
   socket.on('fold player', foldPlayer);
+  socket.on('reveal', revealHand);
   socket.on('reset players', resetSeatedPlayers);
   socket.on('rebuy', rebuy);
   socket.on('sidepot', sidePot);

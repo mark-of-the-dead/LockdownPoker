@@ -73,6 +73,7 @@ class App extends React.Component {
 
   removeSave = () => {
     window.localStorage.removeItem('savedplayer');
+    window.location.reload();
   }
 
   betChips = (player, amount) => {
@@ -99,6 +100,10 @@ class App extends React.Component {
     socket.emit('fold player', playerid );
   }
 
+  revealHand = (playerid) => {
+    socket.emit('reveal', playerid, socket.id );
+  }
+
   claimPlayer = (e) => {
     e.preventDefault();
     socket.emit('claim player', this.props.match.params.playerId, this.pinRef.current.value, socket.id, false);
@@ -123,6 +128,7 @@ class App extends React.Component {
         <PlayerUI id={playerId} player={this.state.players[playerId]}  cards={this.state.hands[playerId]}
           betChips={this.betChips}
           foldPlayer={this.foldPlayer}
+          revealHand={this.revealHand}
           callBet={this.callBet}
           checkBet={this.checkBet}
           standPlayer={this.standPlayer}
