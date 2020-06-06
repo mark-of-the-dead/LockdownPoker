@@ -42,6 +42,7 @@ class App extends React.Component {
   syncState = (data) => {
     this.setState({
       players: data.players,
+      game: data.game,
       connections: data.connections
     });
   }
@@ -66,6 +67,7 @@ class App extends React.Component {
     if(window.localStorage.getItem('savedplayer') !== null){
       setTimeout(function(){
         const data = JSON.parse(window.localStorage.getItem('savedplayer'));
+        //compare this.state.game.gameID to saved gamed ID data[3]
         socket.emit('claim player', data[0], data[1], socket.id, true);
       }, 1000)
     }
@@ -107,7 +109,7 @@ class App extends React.Component {
   claimPlayer = (e) => {
     e.preventDefault();
     socket.emit('claim player', this.props.match.params.playerId, this.pinRef.current.value, socket.id, false);
-    window.localStorage.setItem('savedplayer', JSON.stringify([this.props.match.params.playerId, this.pinRef.current.value, Date.now()]));
+    window.localStorage.setItem('savedplayer', JSON.stringify([this.props.match.params.playerId, this.pinRef.current.value, Date.now(), this.state.game.gameID]));
   }
   
 

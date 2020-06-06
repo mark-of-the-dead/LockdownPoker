@@ -26,26 +26,27 @@ server.listen(5000, function() {
     console.log('Starting server on port 5000');
   });
 
+  create_UUID = () => {
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+  }
 
 state = {
   players: {},
-  game: { 'smallblind' : 25, 'startchips' : 5000 },
+  game: { 'smallblind' : 25, 'startchips' : 5000, gameID : create_UUID() },
   hands: {},
   community: {},
   round: {pots: [0], currentBet: 0},
   revealed: {},
-  deck: freshDeck
+  deck: freshDeck,
 };
 
-create_UUID = () => {
-  var dt = new Date().getTime();
-  var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = (dt + Math.random()*16)%16 | 0;
-      dt = Math.floor(dt/16);
-      return (c=='x' ? r :(r&0x3|0x8)).toString(16);
-  });
-  return uuid;
-}
+
 
 addPlayer = (player) => {
   state.players[`${Date.now()}`] = player;
@@ -114,6 +115,7 @@ sidePot = (amount) => {
 }
 
 splitPot = (playerIDs, potID) => {
+  lockBets();
   const payout = Math.floor(state.round.pots[potID] / playerIDs.length);
   playerIDs.forEach(
     key => {
