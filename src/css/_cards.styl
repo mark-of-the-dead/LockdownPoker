@@ -33,6 +33,15 @@
 }
 
 
+@-webkit-keyframes revealUp {
+    0% { -webkit-transform: translateY(0px); opacity: 1; }
+    100% { -webkit-transform: translateY(-600px); opacity: 0; }
+}
+@-moz-keyframes revealUp {
+    0% { -moz-transform: translateY(0px); opacity: 1; }
+    100% { -moz-transform: translateY(-600px); opacity: 0; }
+}
+
 .hold-cards
     .holdcard
         display inline-block
@@ -45,6 +54,9 @@
         text-indent -9868px
         &.blank
             border 1px solid #ccc
+    &.revealed
+        -webkit-animation  revealUp 0.5s forwards
+        animation  revealUp 0.5s forwards
 
 
 

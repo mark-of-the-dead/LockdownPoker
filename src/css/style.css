@@ -111,6 +111,16 @@
     opacity: 1;
   }
 }
+@-webkit-keyframes revealUp {
+  0% {
+    -webkit-transform: translateY(0px);
+    opacity: 1;
+  }
+  100% {
+    -webkit-transform: translateY(-600px);
+    opacity: 0;
+  }
+}
 .hold-cards .holdcard {
   display: inline-block;
   width: 100px;
@@ -123,6 +133,10 @@
 }
 .hold-cards .holdcard.blank {
   border: 1px solid #ccc;
+}
+.hold-cards.revealed {
+  -webkit-animation: revealUp 0.5s forwards;
+  animation: revealUp 0.5s forwards;
 }
 .holdcard.HA,
 .table-card.HA,
