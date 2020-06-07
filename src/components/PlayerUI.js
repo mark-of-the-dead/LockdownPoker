@@ -55,19 +55,25 @@ class PlayerUI extends React.Component {
     return (
       <React.Fragment>
         <div className="player-ui">
-          {player.name}({this.props.id})
+          {/* {player.name}({this.props.id}) */}
           <div className="hold-cards">
             <span className={`holdcard ${card1}${addClass}`}>{card1}</span>
             <span className={`holdcard ${card2}${addClass}`}>{card2}</span>
           </div>
-          {!player.currentBet ? <button onClick={this.check}>Check</button> : null }
-          <button onClick={this.placeBet}>Bet</button>
+          {!player.currentBet ? <button className='btn btn-check' onClick={this.check}>Check</button> : null }
           <input type="range" min="0" max="1000" step="5"
-            className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />{this.state.amountLabel}
-          <button onClick={this.call}>Call</button>
-          <button onClick={this.fold}>Fold</button>
-          <button onClick={this.reveal}>Reveal</button>
-          {player.seated ? <button onClick={this.stand}>Sit Out</button> : <button onClick={this.sit}>Sit Down</button> }
+            className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />
+          <span className='slider-label'>{this.state.amountLabel}</span>
+          <br/>
+          <button className='btn btn-bet' onClick={this.placeBet}>Bet</button>
+          <br/>
+          <button className='btn btn-call' onClick={this.call}>Call</button>
+          <button className='btn btn-fold' onClick={this.fold}>Fold</button>
+          <br/>
+          <button className='btn btn-reveal' onClick={this.reveal}>Reveal</button>
+          
+          <br/>
+          {player.seated ? <button className='btn btn-stand' onClick={this.stand}>Sit Out</button> : <button className='btn btn-sit' onClick={this.sit}>Sit Down</button> }
         </div>
         <hr />
       </React.Fragment>

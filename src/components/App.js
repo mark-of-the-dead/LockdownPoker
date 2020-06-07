@@ -11,7 +11,9 @@ import RevealedHands from './RevealedHands';
 
 import io from 'socket.io-client'
 
-let socket = io(`http://localhost:5000`)
+// let socket = io(`http://localhost:5000`)
+const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+let socket = io(server);
 
 class App extends React.Component {
   constructor(props){

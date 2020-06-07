@@ -6,6 +6,8 @@ const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
 
+const fs = require('fs');
+
 const app = express();
 const server = http.Server(app);
 const io = socketIO(server);
@@ -47,6 +49,16 @@ state = {
 };
 
 
+saveState = () => {
+  const path = '/tmp/ReactPoker/'+state.game.gameID+'-game-state.json';
+  fs.writeFile(path, JSON.stringify(state), function(){
+    //Game Saved
+  });
+}
+
+fs.mkdir('/tmp/ReactPoker', function(){
+  setInterval(saveState, 60000);
+});
 
 addPlayer = (player) => {
   state.players[`${Date.now()}`] = player;
@@ -277,6 +289,7 @@ var connections = {};
 io.on('connection', function(socket) {
   socket.on('new connection', function() {
     connections[socket.id] = '';
+    console.log('new connection - ', socket.id, ' : ', socket.handshake);
   });
   socket.on('add player', function(data) {
     const fixedVals = {
@@ -341,7 +354,7 @@ setInterval(function() {
     revealed : state.revealed,
     connections: connections
   });
-}, 1000 / 30);
+}, 1000 / 2);
 
 // setInterval(function() {
 //   io.sockets.emit('hand', {

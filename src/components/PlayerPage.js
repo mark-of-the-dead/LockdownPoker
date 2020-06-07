@@ -17,7 +17,8 @@ import MoneyManager from './MoneyManager';
 
 import io from 'socket.io-client'
 
-let socket = io(`http://localhost:5000`)
+const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+let socket = io(server)
 
 class App extends React.Component {
 
@@ -40,6 +41,7 @@ class App extends React.Component {
   };
 
   syncState = (data) => {
+    console.log(data.game.gameID);
     this.setState({
       players: data.players,
       game: data.game,
@@ -67,7 +69,12 @@ class App extends React.Component {
     if(window.localStorage.getItem('savedplayer') !== null){
       setTimeout(function(){
         const data = JSON.parse(window.localStorage.getItem('savedplayer'));
-        //compare this.state.game.gameID to saved gamed ID data[3]
+        console.log('state - ', this.state);
+        // if(data[3] != this.state.game.gameId){
+        //   //ignore previous save
+        // }else{
+        //   //reconnect automatically
+        // }
         socket.emit('claim player', data[0], data[1], socket.id, true);
       }, 1000)
     }
@@ -115,7 +122,8 @@ class App extends React.Component {
 
   render(){
     let playerId = this.props.match.params.playerId;
-    const playerTitle = this.state.players[playerId] ? this.state.players[playerId].name + "(#" + playerId + ")" : '';
+    // const playerTitle = this.state.players[playerId] ? this.state.players[playerId].name + "(#" + playerId + ")" : '';
+    const playerTitle = this.state.players[playerId] ? this.state.players[playerId].name : '';
 
     return (
       <div className="react-poker-player">
