@@ -25,7 +25,7 @@ class App extends React.Component {
   state = {
     players: {},
     game: {},
-    hands: {},
+    // hands: {},
     community: {},
     round: {},
     revealed: {},
@@ -36,7 +36,7 @@ class App extends React.Component {
     this.setState({
       players: data.players,
       game: data.game,
-      hands: data.hands,
+      // hands: data.hands,
       community: data.community,
       round: data.round,
       revealed: data.revealed,

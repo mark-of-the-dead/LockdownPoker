@@ -289,7 +289,7 @@ var connections = {};
 io.on('connection', function(socket) {
   socket.on('new connection', function() {
     connections[socket.id] = '';
-    console.log('new connection - ', socket.id, ' : ', socket.handshake);
+    // console.log('new connection - ', socket.id, ' : ', socket.handshake);
   });
   socket.on('add player', function(data) {
     const fixedVals = {
@@ -348,7 +348,7 @@ setInterval(function() {
   io.sockets.emit('state', {
     players : state.players,
     game : state.game,
-    hands : state.hands,
+    // hands : state.hands,
     community : state.community,
     round : state.round,
     revealed : state.revealed,

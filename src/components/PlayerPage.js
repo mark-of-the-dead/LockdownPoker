@@ -69,7 +69,6 @@ class App extends React.Component {
     if(window.localStorage.getItem('savedplayer') !== null){
       setTimeout(function(){
         const data = JSON.parse(window.localStorage.getItem('savedplayer'));
-        console.log('state - ', this.state);
         // if(data[3] != this.state.game.gameId){
         //   //ignore previous save
         // }else{

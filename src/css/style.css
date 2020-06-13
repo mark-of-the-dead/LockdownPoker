@@ -417,6 +417,18 @@
   font-weight: normal;
   font-style: normal;
 }
+.game-info {
+  position: absolute;
+  top: 300px;
+  right: 0;
+  text-align: right;
+  width: 100%;
+}
+.game-info ul {
+  text-align: center;
+  list-style: none;
+  width: 100%;
+}
 article,
 aside,
 details,
@@ -716,14 +728,8 @@ header.top h3:after {
 .table ul {
   width: 565px;
   height: 140px;
-  margin: 110px 70px;
+  margin: 80px 70px;
   text-align: left;
-}
-.game-info {
-  position: absolute;
-  top: 0;
-  right: 0;
-  text-align: right;
 }
 .reveal-list {
   list-style: none;
