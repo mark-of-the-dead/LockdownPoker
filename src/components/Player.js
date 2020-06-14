@@ -21,7 +21,7 @@ class Player extends React.Component {
 
     return (
       <li className={`player-box${classAdditons}`}>
-        <img width="25" src={`/images/avatars/${avatar}.jpg`} />
+        <img src={`/images/avatars/${avatar}.jpg`} />
         <span className="player-name">{name}</span>
         <span className="player-cash">&pound;{cash}</span>
         <span className="player-status">{bet}</span>

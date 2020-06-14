@@ -40,29 +40,14 @@ header.top
       bottom 7px
 
 
-// Table
-
-.table
-  background-color tablegreen
-  padding 20px
-  margin 0 auto
-  margin-top 50px
-  text-align center
-  ul
-      width 565px
-      height 140px
-      margin 80px 70px
-      text-align left
-  height 400px
-  width 800px
-  border-radius 200px
-
-
 // Revealed Hands
 
 .reveal-list
   list-style none
   text-align center
+  position absolute
+  bottom 20px
+  width 100%
 
   .revealedhand
     display inline-block
@@ -106,6 +91,7 @@ header.top
 
 .player-list
   position absolute
+  z-index 10
   top 10px
   left 10px
   text-align left
@@ -124,6 +110,8 @@ header.top
       margin 2px 0
       position relative
       padding-right 75px
+      img
+        width 25px
       span
         &.player-cash
           position absolute
@@ -135,6 +123,15 @@ header.top
           width 150px
           text-align left
           color #fff
+
+@media (min-width: 1200px)
+  .player-list
+    ul
+      li
+        padding-right 110px
+        font-size 16px
+        img
+          width 40px
 
 // Player UI
 

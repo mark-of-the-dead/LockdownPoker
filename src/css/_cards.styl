@@ -22,6 +22,15 @@
     animation-delay 0.5s
     opacity 0
 
+@media (min-width: 1050px)
+    .table-card
+        width 120px
+        height 168px
+
+@media (min-width: 1200px)
+    .table-card
+        width 140px
+        height 196px
 
 @-webkit-keyframes slideDown {
     0% { -webkit-transform: translateY(-150px); opacity: 0; }
@@ -58,7 +67,14 @@
         -webkit-animation  revealUp 0.5s forwards
         animation  revealUp 0.5s forwards
 
-
+@media (max-width: 480px)
+    .hold-cards
+        .holdcard
+            display inline-block
+            width 160px
+            height 224px
+            border-radius 10px
+            margin 5px
 
 .holdcard.HA, .table-card.HA, .revealcard.HA { background-image: url('images/cards/card_H_A.png')}
 .holdcard.H2, .table-card.H2, .revealcard.H2 { background-image: url('images/cards/card_H_2.png')}
