@@ -61,6 +61,7 @@ fs.mkdir('/tmp/ReactPoker', function(){
 });
 
 addPlayer = (player) => {
+  console.log('NEW PLAYER - ',player);
   state.players[`${Date.now()}`] = player;
 }
 
@@ -90,6 +91,7 @@ revealHand = (id, socket) => {
       'name': state.players[id].name,
       'hand': state.hands[id]
     };
+    state.players[id].revealed = true;
   }else{
     let tmpID = connections[socket];
     console.log('REVEAL log - ', state.players, id, socket, tmpID);
@@ -115,6 +117,7 @@ resetSeatedPlayers = () => {
     }else{
       state.players[key].folded = true;
     }
+    state.players[key].revealed = false;
   })
 }
 
@@ -285,6 +288,12 @@ assignConnection = (id, pin, socket, autoassign) => {
   }
 }
 
+assignTableConnection = (socket) => {
+  if(!connections[socket]){
+    connections[socket] = 'table';
+  }
+}
+
 var connections = {};
 io.on('connection', function(socket) {
   socket.on('new connection', function() {
@@ -298,7 +307,8 @@ io.on('connection', function(socket) {
       active: false,
       folded: false,
       dealer: false,
-      assigned: false
+      assigned: false,
+      revealed: false
     }
     const player = {...data, ...fixedVals}
     addPlayer(player);

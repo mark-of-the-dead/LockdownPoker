@@ -25,9 +25,9 @@ class PlayerUI extends React.Component {
 
   reveal = () => {
     this.props.revealHand(this.props.id);
-    this.setState({
-      handrevealed : true
-    })
+    // this.setState({
+    //   handrevealed : true
+    // })
   }
 
   call = () => {
@@ -60,7 +60,7 @@ class PlayerUI extends React.Component {
       <React.Fragment>
         <div className="player-ui">
           {/* {player.name}({this.props.id}) */}
-          <div className={`hold-cards ${this.state.handrevealed ? 'revealed' : ''}`}>
+          <div className={`hold-cards ${player.revealed ? 'revealed' : ''}`}>
             <span className={`holdcard ${card1}${addClass}`}>{card1}</span>
             <span className={`holdcard ${card2}${addClass}`}>{card2}</span>
           </div>

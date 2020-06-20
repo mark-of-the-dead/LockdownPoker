@@ -192,7 +192,7 @@ class Admin extends React.Component {
           <button onClick={this.dealRiver}>Deal river</button>
         </div>
         <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
-        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} moveMoney={this.moveMoney} />
+        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} sidePot={this.sidePot} moveMoney={this.moveMoney} />
 
 
 <hr/>

@@ -85,27 +85,27 @@ class App extends React.Component {
   }
 
   betChips = (player, amount) => {
-    socket.emit('bet', player, amount);
+    socket.emit('bet', player, amount, socket.id);
   }
 
   callBet = (player) => {
-    socket.emit('call bet', player);
+    socket.emit('call bet', player, socket.id);
   }
 
   checkBet = (player) => {
-    socket.emit('check bet', player);
+    socket.emit('check bet', player, socket.id);
   }
 
   standPlayer = (playerid) => {
-    socket.emit('stand player', playerid );
+    socket.emit('stand player', playerid, socket.id );
   }
 
   sitPlayer = (playerid) => {
-    socket.emit('sit player', playerid );
+    socket.emit('sit player', playerid, socket.id );
   }
 
   foldPlayer = (playerid) => {
-    socket.emit('fold player', playerid );
+    socket.emit('fold player', playerid, socket.id );
   }
 
   revealHand = (playerid) => {

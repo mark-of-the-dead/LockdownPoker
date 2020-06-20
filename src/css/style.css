@@ -447,15 +447,36 @@
 }
 .game-info {
   position: absolute;
-  top: 300px;
+  top: 280px;
   right: 0;
   text-align: right;
-  width: 100%;
+  width: 840px;
+  z-index: 11;
 }
 .game-info ul {
   text-align: center;
   list-style: none;
   width: 100%;
+}
+@media (min-width: 1050px) {
+  .game-info {
+    top: 325px;
+    width: 940px;
+  }
+}
+@media (min-width: 1200px) {
+  .game-info {
+    top: 400px;
+    width: 1100px;
+    right: -30px;
+  }
+}
+@media (min-width: 1800px) {
+  .game-info {
+    top: 500px;
+    width: 1400px;
+    right: -40px;
+  }
 }
 article,
 aside,
@@ -750,7 +771,7 @@ input::-moz-focus-inner {
   .table {
     height: 700px;
     width: 1400px;
-    border-radius: 275px;
+    border-radius: 350px;
     right: -50px;
   }
   .table ul {
@@ -789,6 +810,9 @@ h2 {
 }
 h3 {
   font-size: 3rem;
+}
+html {
+  overflow-y: scroll;
 }
 body {
   background: #01361a;

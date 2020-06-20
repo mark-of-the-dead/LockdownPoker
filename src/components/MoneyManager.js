@@ -24,11 +24,19 @@ class MoneyManager extends React.Component {
     e.currentTarget.reset();
   }
 
+  sidePot = (e) => {
+    this.props.sidePot(0);
+  }
+
   render(){
     const pots = this.props.pots || {};
 
     return (
       <div>
+
+
+        <button type="submit" onClick={this.sidePot}>New Pot</button>
+
         <form className="split-pot" onSubmit={this.cashout}>
         <p>Payout from pot
         <select name="potlist" ref={this.potRef}>
