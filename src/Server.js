@@ -138,6 +138,10 @@ splitPot = (playerIDs, potID) => {
       state.round.pots[potID] -= payout;
     }
   );
+  if(potID > 0){
+    delete state.round.pots[potID];
+    state.round.pots = state.round.pots.filter(n => n);
+  }
 }
 
 moveMoney = (fromPlayer, toPlayer, amount) => {

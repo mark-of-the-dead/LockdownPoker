@@ -23,7 +23,7 @@ class ViewSelector extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className='view-selection'>
         {/* <form className="view-selector" onSubmit={this.goToUI}>
           <h2>Enter table name</h2>
           <input type="text" required placeholder="Table Name" ref={this.myInput} defaultValue={getFunName()} />
@@ -40,6 +40,11 @@ class ViewSelector extends React.Component {
           <option value="5">Kieran</option>
           <option value="6">Simon</option>
         </select>
+
+        <ul className="view-selector">
+          <li className="btn-tableview" onClick={this.goToUI}>View Table</li>
+          <li className="btn-handview">View Hand</li>
+        </ul>
 
 
       </div>
