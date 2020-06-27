@@ -672,11 +672,11 @@ input::-moz-focus-inner {
   text-align: center;
 }
 .player-ui .slider {
-  width: 160px;
+  width: 200px;
 }
 .player-ui .slider-label {
   display: inline-block;
-  width: 40px;
+  width: 70px;
 }
 .player-ui .btn {
   border: none;
@@ -708,13 +708,17 @@ input::-moz-focus-inner {
   font-weight: bold;
   font-size: 0.8em;
 }
+.player-ui .btn-betminus,
+.player-ui .btn-betplus {
+  width: 60px;
+}
 @media (max-width: 480px) {
   .player-ui .slider {
-    width: 280px;
+    width: 320px;
     margin: 10px 0;
   }
   .player-ui .slider-label {
-    width: 50px;
+    width: 120px;
   }
   .player-ui .btn {
     padding: 10px 5px;
@@ -739,6 +743,10 @@ input::-moz-focus-inner {
   .player-ui .btn-sit,
   .player-ui .btn-stand {
     font-size: 0.8em;
+  }
+  .player-ui .btn-betminus,
+  .player-ui .btn-betplus {
+    width: 100px;
   }
 }
 .table {

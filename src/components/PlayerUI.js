@@ -19,6 +19,18 @@ class PlayerUI extends React.Component {
     this.props.betChips(this.props.id,this.amountRef.current.value);
   }
 
+  increaseSlider = () => {
+    const slider = document.getElementById('amountSlider');
+    slider.value = parseInt(slider.value)+5;
+    this.updateAmount()
+  }
+
+  decreaseSlider = () => {
+    const slider = document.getElementById('amountSlider');
+    slider.value = parseInt(slider.value)-5;
+    this.updateAmount()
+  }
+
   fold = () => {
     this.props.foldPlayer(this.props.id);
   }
@@ -67,8 +79,11 @@ class PlayerUI extends React.Component {
           {!player.currentBet ? <button className='btn btn-check' onClick={this.check}>Check</button> : null }
           <input type="range" min="0" max="1000" step="5"
             className="slider" name="amount" id="amountSlider" onInput={this.updateAmount} ref={this.amountRef} />
-          <span className='slider-label'>{this.state.amountLabel}</span>
-          <br/>
+          <div>
+            <button className='btn btn-betminus' onClick={this.decreaseSlider}>-</button>
+            <span className='slider-label'>{this.state.amountLabel}</span>
+            <button className='btn btn-betplus' onClick={this.increaseSlider}>+</button>
+          </div>
           <button className='btn btn-bet' onClick={this.placeBet}>Bet</button>
           <br/>
           <button className='btn btn-call' onClick={this.call}>Call</button>

@@ -32,7 +32,7 @@ class BlindManager extends React.Component {
         <select id="playerList" name="playerlist" ref={this.idRef}>
           {Object.keys(this.props.players).map(key => <option key={key} value={key} >{this.props.players[key].name}</option>)}
         </select>
-        <button type="submit">Set Dealer</button>
+        <button type="submit" id="setDealerForm">Set Dealer</button>
         </form>
         <form className="set-blinds" onSubmit={this.payBlinds}>
         <p>Set Blinds:</p>

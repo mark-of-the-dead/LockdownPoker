@@ -86,6 +86,7 @@ class Admin extends React.Component {
 
   dealHold = () => {
     socket.emit('deal hold');
+    document.getElementById('setDealerForm').click(); //shortcut to auto-set dealer
   }
 
   dealFlop = () => {

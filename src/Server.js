@@ -139,8 +139,7 @@ splitPot = (playerIDs, potID) => {
     }
   );
   if(potID > 0){
-    delete state.round.pots[potID];
-    state.round.pots = state.round.pots.filter(n => n);
+    state.round.pots.splice(potID,1)
   }
 }
 
