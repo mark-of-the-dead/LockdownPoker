@@ -7,6 +7,8 @@ import Table from './Table';
 import samplePlayers from '../sample-players';
 import freshDeck from '../fresh-deck';
 
+import Messenger from './Messenger';
+
 import RevealedHands from './RevealedHands';
 
 import io from 'socket.io-client'
@@ -63,6 +65,7 @@ class App extends React.Component {
         <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
         <RevealedHands hands={this.state.revealed} />
+        <Messenger />
       </div>
     )
   }
