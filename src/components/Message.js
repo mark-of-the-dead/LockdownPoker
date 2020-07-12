@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-class Messenger extends React.Component {
+class Messenge extends React.Component {
   render(){
     const msgclass = "message-" + this.props.type;
     return (
@@ -12,4 +12,4 @@ class Messenger extends React.Component {
   }
 }
 
-export default Messenger;
+export default Messenge;

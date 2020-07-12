@@ -45,6 +45,7 @@ state = {
   community: {},
   round: {pots: [0], currentBet: 0},
   revealed: {},
+  messages: {},
   deck: freshDeck,
 };
 
@@ -63,6 +64,19 @@ fs.mkdir('/tmp/ReactPoker', function(){
 addPlayer = (player) => {
   console.log('NEW PLAYER - ',player);
   state.players[`${Date.now()}`] = player;
+}
+
+showMsg = (msg, volume, flare) => {
+  const msgID = Date.now();
+  state.messages[msgID] = {
+    text : msg,
+    volume : volume,
+    flare : flare
+  };
+
+  setTimeout(function(){
+    delete state.messages[msgID]
+  }, 4000)
 }
 
 standPlayer = (id) => {
@@ -108,6 +122,7 @@ rebuy = (id) => {
 assignDealer = (playerid) => {
   Object.keys(state.players).forEach(key => state.players[key].dealer = false);
   state.players[playerid].dealer = true;
+  showMsg(state.players[playerid].name + ' is now Dealer', 'quiet', false);
 }
 
 resetSeatedPlayers = () => {
@@ -127,6 +142,7 @@ sidePot = (amount) => {
   state.round.pots.splice(0, 0, 0); //at index 0, without removing any items, add item zero;
   state.round.pots[1] -= amt;
   state.round.pots[0] += amt;
+  showMsg('New side pot', 'quiet', false);
 }
 
 splitPot = (playerIDs, potID) => {
@@ -136,6 +152,7 @@ splitPot = (playerIDs, potID) => {
     key => {
       state.players[key].cash += payout;
       state.round.pots[potID] -= payout;
+      showMsg(state.players[key].name + ' gets £' + payout, 'quiet', false);
     }
   );
   if(potID > 0){
@@ -149,6 +166,7 @@ moveMoney = (fromPlayer, toPlayer, amount) => {
     state.players[fromPlayer].cash -= amt;
     state.players[toPlayer].cash += amt;
   }
+  showMsg( amount + ' moved from ' + state.players[fromPlayer].name + ' to ' + state.players[fromPlayer].name, 'quiet', false);
 }
 
 movePotMoney = (fromPot, toPot, amount) => {
@@ -171,6 +189,7 @@ lockBets = () => {
 
 checkBet = (player) => {
   state.players[player].checked = true;
+  showMsg(state.players[player].name + ' checked', 'quiet', false);
 }
 
 betChips = (player, amount) => { // take blind into account?
@@ -181,6 +200,7 @@ betChips = (player, amount) => { // take blind into account?
   state.players[player]['currentBet'] = state.players[player]['currentBet'] + amt || amt;
   state.round.pots[0] = state.round.pots[0] + amt;
   console.log("Player '" + state.players[player].name + "'(ID:"+player+") wants to bet £" + amount);
+  showMsg( state.players[player].name + ' bets £' + amount, 'quiet', false);
 
   let currentHighestBet = 0;
   Object.keys(state.players).forEach(
@@ -198,6 +218,7 @@ callBet = (player) => {
 
 
 dealHold = () => {
+  showMsg('Dealing hold cards...', 'quiet', false);
   lockBets();
   resetSeatedPlayers();
   state.revealed = {};
@@ -223,6 +244,7 @@ dealHold = () => {
 }
 
 dealFlop = () => {
+  showMsg('Dealing the flop...', 'quiet', false);
   lockBets();
   let arr = [];
   for(let i=0;i<3;i++){
@@ -235,6 +257,7 @@ dealFlop = () => {
 }
 
 dealTurn = () => {
+  showMsg('Dealing turn card...', 'quiet', false);
   lockBets();
 
   const j = Math.floor(Math.random() * state.deck.length);
@@ -243,6 +266,7 @@ dealTurn = () => {
 }
 
 dealRiver = () => {
+  showMsg('Dealing river card...', 'quiet', false);
   lockBets();
 
   const j = Math.floor(Math.random() * state.deck.length);
@@ -266,6 +290,7 @@ assignConnection = (id, pin, socket, autoassign) => {
             console.log('connections-', connections);
 
             io.sockets.sockets[socket].emit('login success');
+            showMsg(state.players[id].name + ' joined', 'quiet', false); // Repeats if user refreshes
   
             connections[socket].updateCycle = setInterval(function() {
               if(connections[socket] && io.sockets.sockets[socket]){
@@ -365,9 +390,12 @@ setInterval(function() {
     community : state.community,
     round : state.round,
     revealed : state.revealed,
+    messages : state.messages,
     connections: connections
   });
 }, 1000 / 2);
+
+showMsg('Server Started', 'loud', false);
 
 // setInterval(function() {
 //   io.sockets.emit('hand', {

@@ -30,7 +30,8 @@ class App extends React.Component {
     // hands: {},
     community: {},
     round: {},
-    revealed: {}
+    revealed: {},
+    messages: {}
   };
 
   syncState = (data) => {
@@ -40,7 +41,8 @@ class App extends React.Component {
       // hands: data.hands,
       community: data.community,
       round: data.round,
-      revealed: data.revealed
+      revealed: data.revealed,
+      messages: data.messages
     });
   }
 
@@ -65,7 +67,7 @@ class App extends React.Component {
         <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} />
         <RevealedHands hands={this.state.revealed} />
-        <Messenger />
+        <Messenger messages={this.state.messages} />
       </div>
     )
   }
