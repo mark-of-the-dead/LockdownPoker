@@ -68,6 +68,11 @@ class Admin extends React.Component {
     socket.emit('load sample', samplePlayers );
   }
 
+  gameIdRef = React.createRef();
+  loadState = () => {
+    socket.emit('loadgame', this.gameIdRef.current.value)
+  }
+
   // setGameConfig = () => {
   //   this.setState({
   //     game: { 'smallblind' : 25, 'startchips' : 5000},
@@ -85,6 +90,19 @@ class Admin extends React.Component {
   }
 
   dealHold = () => {
+    for(let i=0;i<this.state.round.pots.length;i++){
+      if(i<1){
+        if(this.state.round.pots[i] > 20){
+          console.log("Are you sure? there's still " + this.state.round.pots[i] + " in pot " + i);
+          break;
+        }
+      }else{
+        if(this.state.round.pots[i] > 0){
+          console.log("Are you sure? there's still " + this.state.round.pots[i] + " in pot " + i);
+          break;
+        }
+      }
+    }
     socket.emit('deal hold');
     document.getElementById('setDealerForm').click(); //shortcut to auto-set dealer
   }
@@ -195,6 +213,9 @@ class Admin extends React.Component {
         <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
         <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} sidePot={this.sidePot} moveMoney={this.moveMoney} />
 
+<hr/>
+        <input name="gameId" ref={this.gameIdRef} type="text" placeholder="Game ID" />
+        <button onClick={this.loadState}>Load game</button>
 
 <hr/>
         {/*

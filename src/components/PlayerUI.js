@@ -16,7 +16,9 @@ class PlayerUI extends React.Component {
   }
 
   placeBet = () => {
-    this.props.betChips(this.props.id,this.amountRef.current.value);
+    if(!this.props.player.folded){
+      this.props.betChips(this.props.id,this.amountRef.current.value);
+    }
   }
 
   increaseSlider = () => {
@@ -84,12 +86,12 @@ class PlayerUI extends React.Component {
             <span className='slider-label'>{this.state.amountLabel}</span>
             <button className='btn btn-betplus' onClick={this.increaseSlider}>+</button>
           </div>
-          <button className='btn btn-bet' onClick={this.placeBet}>Bet</button>
+          <button className='btn btn-bet' onClick={this.placeBet} disabled={player.folded}>Bet</button>
           <br/>
-          <button className='btn btn-call' onClick={this.call}>Call</button>
-          <button className='btn btn-fold' onClick={this.fold}>Fold</button>
+          <button className='btn btn-call' onClick={this.call} disabled={player.folded}>Call</button>
+          <button className='btn btn-fold' onClick={this.fold} disabled={player.folded}>Fold</button>
           <br/>
-          <button className='btn btn-reveal' onClick={this.reveal}>Reveal</button>
+          <button className='btn btn-reveal' onClick={this.reveal} disabled={player.folded}>Reveal</button>
           
           <br/>
           {player.seated ? <button className='btn btn-stand' onClick={this.stand}>Sit Out</button> : <button className='btn btn-sit' onClick={this.sit}>Sit Down</button> }

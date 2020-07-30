@@ -41,7 +41,7 @@ class App extends React.Component {
   };
 
   syncState = (data) => {
-    console.log(data.game.gameID);
+    //console.log(data.game.gameID);
     this.setState({
       players: data.players,
       game: data.game,

@@ -57,6 +57,13 @@ saveState = () => {
   });
 }
 
+loadState = (gameID) => {
+  const path = '/tmp/ReactPoker/'+gameID+'-game-state.json';
+  fs.readFile(path, 'utf8', function(err, data){
+    state = JSON.parse(data);
+  });
+}
+
 fs.mkdir('/tmp/ReactPoker', function(){
   setInterval(saveState, 60000);
 });
@@ -363,6 +370,7 @@ io.on('connection', function(socket) {
   socket.on('load sample', loadSample);
   socket.on('assign dealer', assignDealer);
   socket.on('claim player', assignConnection);
+  socket.on('loadgame', loadState);
 
   socket.on('disconnect', function() {
     if(connections[socket.id]){
