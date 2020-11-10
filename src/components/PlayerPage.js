@@ -18,6 +18,7 @@ import MoneyManager from './MoneyManager';
 import io from 'socket.io-client'
 
 const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+// const server = 'http://shuffles.eu.ngrok.io';
 let socket = io(server)
 
 class App extends React.Component {

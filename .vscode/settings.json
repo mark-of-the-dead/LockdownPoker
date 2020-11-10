@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.deploySubpath": ".",
+    "appService.defaultWebAppToDeploy": "/subscriptions/8864cb38-f37b-4635-826a-13bcdfd98851/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/reactpoker"
+}

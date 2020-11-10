@@ -1,3 +1,47 @@
+.admin {
+  margin-top: 10px;
+}
+.admin input {
+  width: 35%;
+}
+.admin select {
+  width: 15%;
+}
+.admin button {
+  padding: 5px 10px;
+}
+.admin button[type = submit] {
+  width: 15%;
+  padding: 0;
+}
+.money-transfers,
+.hand-controls,
+.player-config,
+.blind-management {
+  margin: 10px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 10px;
+}
+.money-transfers.closed,
+.hand-controls.closed,
+.player-config.closed,
+.blind-management.closed {
+  display: none;
+}
+.admin-title {
+  margin: 20px 0 0 10px;
+  font-size: 22px;
+}
+.hand-controls {
+  text-align: center;
+}
+.hand-controls button {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-weight: bold;
+}
 .order-enter {
   -webkit-transform: translateX(-120%);
           transform: translateX(-120%);
@@ -1036,6 +1080,7 @@ header.top h3:after {
 }
 .view-selector {
   list-style: none;
+  padding: 0;
 }
 .view-selector li {
   width: 200px;

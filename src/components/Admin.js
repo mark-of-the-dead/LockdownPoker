@@ -18,14 +18,10 @@ import MoneyManager from './MoneyManager';
 import io from 'socket.io-client'
 
 const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+// const server = 'http://shuffles.eu.ngrok.io';
 let socket = io(server)
 
 class Admin extends React.Component {
-  constructor(props){
-    super(props)
-    // this.resetDeck = this.resetDeck.bind(this);
-    // this.dealHold = this.dealHold.bind(this);
-  }
 
   state = {
     players: {},
@@ -33,7 +29,8 @@ class Admin extends React.Component {
     hands: {},
     community: {},
     round: {},
-    deck: freshDeck
+    deck: freshDeck,
+    collapsibleSections: {player: '', blinds: '', payouts:''}
   };
 
   syncState = (data) => {
@@ -192,26 +189,65 @@ class Admin extends React.Component {
   //   // })
   // }
 
+  togglePlayerConfig = (e) => {
+    let toggleState = this.state.collapsibleSections.player;
+    this.setState({collapsibleSections: {
+      blinds: this.state.collapsibleSections.blinds,
+      payouts: this.state.collapsibleSections.payouts,
+      player: toggleState == 'closed' ? '' : 'closed'}
+    })
+  }
+
+  toggleBlinds = (e) => {
+    let toggleState = this.state.collapsibleSections.blinds;
+    this.setState({collapsibleSections: {
+      player: this.state.collapsibleSections.player,
+      payouts: this.state.collapsibleSections.payouts,
+      blinds: toggleState == 'closed' ? '' : 'closed'}})
+  }
+
+  togglePayouts = (e) => {
+    let toggleState = this.state.collapsibleSections.payouts;
+    this.setState({collapsibleSections: {
+      blinds: this.state.collapsibleSections.blinds,
+      player: this.state.collapsibleSections.player,
+      payouts: toggleState == 'closed' ? '' : 'closed'}})
+  }
+
   render(){
+
+    var pcClosed = '';
+
     return (
-      <div className="react-poker">
+      <div className="react-poker admin">
         {/* <Players playerCount={Object.keys(this.state.players).length} players={this.state.players} />
         <Info gamename="Table 1" startchips={this.state.game.startchips} blinds={this.state.game.smallblind} round={this.state.round} players={this.state.players} pots={this.state.round.pots}/>
         <Table cards={this.state.community} /> */}
 
-<hr/>
 
-        <AddPlayerForm addPlayer={this.addPlayer} />
-        <div className="hand-controls">
+        <h3 className="admin-title collapsible" onClick={this.togglePlayerConfig}>Player Form</h3>
+        <div className={`player-config ${this.state.collapsibleSections.player}`}>
+          <AddPlayerForm addPlayer={this.addPlayer} />
           <button onClick={this.loadSample}>Load Sample</button>
           <button onClick={this.resetSeatedPlayers}>reset Players</button>
+        </div>
+        
+        <div className="hand-controls">
           <button onClick={this.dealHold}>Deal new hand</button>
           <button onClick={this.dealFlop}>Deal flop</button>
           <button onClick={this.dealTurn}>Deal turn</button>
           <button onClick={this.dealRiver}>Deal river</button>
         </div>
-        <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
-        <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} sidePot={this.sidePot} moveMoney={this.moveMoney} />
+        
+        <h3 className="admin-title collapsible" onClick={this.toggleBlinds}>Dealer / Blinds</h3>
+        <div className={`blind-management ${this.state.collapsibleSections.blinds}`}>
+          <BlindManager players={this.state.players} assignDealer={this.assignDealer} blinds={this.state.game.smallblind} betChips={this.betChips} />
+        </div>
+
+        <h3 className="admin-title collapsible" onClick={this.togglePayouts}>Payouts</h3>
+        <div className={`money-transfers ${this.state.collapsibleSections.payouts}`}>
+          <MoneyManager players={this.state.players} pots={this.state.round.pots} splitPot={this.splitPot} sidePot={this.sidePot} moveMoney={this.moveMoney} />
+        </div>
 
 <hr/>
         <input name="gameId" ref={this.gameIdRef} type="text" placeholder="Game ID" />

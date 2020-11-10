@@ -1,7 +1,28 @@
 import React from 'react';
 import { getFunName } from '../helpers';
 
+import io from 'socket.io-client'
+
+const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+// const server = 'http://shuffles.eu.ngrok.io';
+let socket = io(server);
+
 class ViewSelector extends React.Component {
+
+  state = {
+    players: {}
+  };
+
+  syncState = (data) => {
+    this.setState({
+      players: data.players
+    });
+  }
+
+
+  componentDidMount(){
+    socket.on('state', this.syncState);
+  }
 
   myInput = React.createRef();
 
@@ -29,23 +50,28 @@ class ViewSelector extends React.Component {
           <input type="text" required placeholder="Table Name" ref={this.myInput} defaultValue={getFunName()} />
           <button type="submit" >Join Table</button>
         </form> */}
-        <button type="submit" onClick={this.goToUI}>Table View</button>
+        {/* <button type="submit" onClick={this.goToUI}>Table View</button> */}
 
-        <select onChange={this.goToPlayer} ref={this.myInput}>
-          <option value="" disabled selected>Player View</option>
-          <option value="1">Mark</option>
-          <option value="2">Andrew</option>
-          <option value="3">Stephen</option>
-          <option value="4">Dave</option>
-          <option value="5">Kieran</option>
-          <option value="6">Simon</option>
-        </select>
+
 
         <ul className="view-selector">
-          <li className="btn-tableview" onClick={this.goToUI}>View Table</li>
-          <li className="btn-handview">View Hand</li>
+          <li className="btn-tableview" onClick={this.goToUI}>Go To Table</li>
+          {/* <li className="btn-handview">
+            View Hand
+            
+          </li> */}
         </ul>
+        View Player: <select onChange={this.goToPlayer} ref={this.myInput}>
+              <option value="" disabled selected>Player View</option>
+              {Object.keys(this.state.players).map(key => <option key={key} value={key}>{this.state.players[key].name}</option>)}
+            </select>
 
+<hr/>
+
+        <h2>Table 1</h2>
+        <ul>
+        {Object.keys(this.state.players).map(key => <li key={key}>{this.state.players[key].name}</li>)}
+        </ul>
 
       </div>
       

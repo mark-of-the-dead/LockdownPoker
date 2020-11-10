@@ -173,7 +173,7 @@ moveMoney = (fromPlayer, toPlayer, amount) => {
     state.players[fromPlayer].cash -= amt;
     state.players[toPlayer].cash += amt;
   }
-  showMsg( amount + ' moved from ' + state.players[fromPlayer].name + ' to ' + state.players[fromPlayer].name, 'quiet', false);
+  showMsg( amount + ' moved from ' + state.players[fromPlayer].name + ' to ' + state.players[toPlayer].name, 'quiet', false);
 }
 
 movePotMoney = (fromPot, toPot, amount) => {
