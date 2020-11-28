@@ -3,7 +3,8 @@ import { getFunName } from '../helpers';
 
 import io from 'socket.io-client'
 
-const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+// const server = window.location.protocol + '//' + window.location.hostname + ':5000'
+const server = window.location.protocol + '//' + window.location.hostname + ':443'
 // const server = 'http://shuffles.eu.ngrok.io';
 let socket = io(server);
 

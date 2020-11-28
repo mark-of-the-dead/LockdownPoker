@@ -14,7 +14,7 @@ const io = socketIO(server);
 
 const startchips = 5000;
 
-app.set('port', 5000);
+app.set('port', 443);
 app.use('/static', express.static(__dirname + '/static'));
 
 
@@ -24,8 +24,8 @@ app.get('/', function(request, response) {
   });
 
   // Starts the server.
-server.listen(5000, function() {
-    console.log('Starting server on port 5000');
+server.listen(443, function() {
+    console.log('Starting server on port 443');
   });
 
   create_UUID = () => {
