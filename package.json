@@ -2,6 +2,7 @@
   "name": "reactpoker",
   "version": "0.0.3",
   "private": true,
+  "engines" : { "node" : ">=10.0.0" },
   "devDependencies": {
     "concurrently": "4.1.0",
     "react-scripts": "^2.1.1"
